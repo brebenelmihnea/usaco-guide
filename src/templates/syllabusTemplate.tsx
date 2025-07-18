@@ -1,63 +1,26 @@
 import { graphql } from 'gatsby';
 import * as React from 'react';
-import styled from 'styled-components';
-import tw from 'twin.macro';
 import {
+  moduleIDToSectionMap,
+  SectionID,
   SECTION_LABELS,
   SECTION_SEO_DESCRIPTION,
   SECTION_SEO_TITLES,
-  SectionID,
-  moduleIDToSectionMap,
 } from '../../content/ordering';
 import DashboardProgress, {
   DashboardProgressSmall,
 } from '../components/Dashboard/DashboardProgress';
-import ModuleLink from '../components/Dashboard/ModuleLink';
-import TopNavigationBar from '../components/TopNavigationBar/TopNavigationBar';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
-import { ModuleLinkInfo } from '../models/module';
+import ModuleLink from '../components/syllabus/ModuleLink';
+import TopNavigationBar from '../components/TopNavigationBar/TopNavigationBar';
+import { ModuleFrequency, ModuleLinkInfo } from '../models/module';
 // import UserDataContext from '../context/UserDataContext/UserDataContext';
 import {
-  getModulesProgressInfo,
-  getProblemsProgressInfo,
+  useModulesProgressInfo,
+  useProblemsProgressInfo,
 } from '../utils/getProgressInfo';
 import { getModulesForDivision } from '../utils/utils';
-
-const DottedLineContainer = styled.div`
-  ${tw`space-y-6 relative`}
-
-  @media (min-width: 768px) {
-    &::before {
-      content: '';
-      position: absolute;
-      width: 2px;
-      display: block;
-      left: calc(50% - 1px);
-      top: 0;
-      bottom: 0;
-      border-right: 2px dashed;
-      ${tw`border-gray-100`}
-    }
-    .dark &::before {
-      ${tw`border-gray-700`}
-    }
-  }
-`;
-
-const SectionContainer = styled.div`
-  ${tw`flex flex-col md:flex-row`}
-
-  &:hover h2 {
-    ${tw`text-gray-600`}
-  }
-  .dark &:hover h2 {
-    ${tw`text-gray-300`}
-  }
-  &:hover h2 + p {
-    ${tw`text-gray-500`}
-  }
-`;
 
 const HeroBGColor: { [key in SectionID]: string } = {
   general: 'bg-blue-700 dark:bg-blue-900',
@@ -130,39 +93,37 @@ const SECTION_DESCRIPTION: { [key in SectionID]: React.ReactNode } = {
 };
 
 export default function Template(props) {
-  const data = props.data;
-
-  const allModules = data.modules.edges.reduce((acc, cur) => {
-    acc[cur.node.frontmatter.id] = cur.node;
-    return acc;
-  }, {});
+  const data: Queries.SyllabusQuery = props.data;
+  const allModules = data.modules.nodes.reduce(
+    (acc, cur) => {
+      acc[cur.frontmatter.id] = cur;
+      return acc;
+    },
+    {} as { [key: string]: (typeof data.modules.nodes)[0] }
+  );
 
   const { division } = props.pageContext;
 
   const section = getModulesForDivision(allModules, division);
 
-  // const { userProgressOnModules, userProgressOnProblems } = React.useContext(
-  //   UserDataContext
-  // );
-
   const moduleIDs = section.reduce(
     (acc, cur) => [...acc, ...cur.items.map(x => x.frontmatter.id)],
-    []
+    [] as string[]
   );
-  const moduleProgressInfo = getModulesProgressInfo(moduleIDs);
+  const moduleProgressInfo = useModulesProgressInfo(moduleIDs);
   const problemIDs = [
-    ...new Set(data.problems.edges.map(x => x.node.uniqueId) as string[]),
+    ...new Set(data.problems.nodes.map(x => x.uniqueId) as string[]),
   ];
-  const problemsProgressInfo = getProblemsProgressInfo(problemIDs);
+  const problemsProgressInfo = useProblemsProgressInfo(problemIDs);
 
-  const progressBarForCategory = category => {
+  const useProgressBarForCategory = (category: (typeof section)[0]) => {
     const categoryModuleIDs = category.items.map(
       module => module.frontmatter.id
     );
-    const categoryProblemIDs = data.problems.edges
-      .filter(x => categoryModuleIDs.includes(x.node.module.frontmatter.id))
-      .map(x => x.node.uniqueId);
-    const problemsProgressInfo = getProblemsProgressInfo(categoryProblemIDs);
+    const categoryProblemIDs = data.problems.nodes
+      .filter(x => categoryModuleIDs.includes(x.module?.frontmatter.id ?? ''))
+      .map(x => x.uniqueId);
+    const problemsProgressInfo = useProblemsProgressInfo(categoryProblemIDs);
     return (
       categoryProblemIDs.length > 1 && (
         <DashboardProgressSmall
@@ -184,19 +145,19 @@ export default function Template(props) {
 
         <main>
           <div className={`${HeroBGColor[division]} py-12 sm:py-16`}>
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-              <h1 className="mb-6 text-white text-5xl tracking-tight leading-10 font-black text-white sm:leading-none md:text-6xl text-center">
+            <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+              <h1 className="mb-6 text-center text-5xl leading-10 font-black tracking-tight text-white sm:leading-none md:text-6xl">
                 {SECTION_LABELS[division]}
               </h1>
               <p
-                className={`${HeroTextColor[division]} text-center mb-8 sm:mb-12 px-4`}
+                className={`${HeroTextColor[division]} mb-8 px-4 text-center sm:mb-12`}
               >
                 {SECTION_DESCRIPTION[division]}
               </p>
-              <div className="grid max-w-2xl mx-auto lg:max-w-full lg:grid-cols-2 gap-8">
-                <div className="bg-white dark:bg-gray-900 shadow sm:rounded-lg">
+              <div className="mx-auto grid max-w-2xl gap-8 lg:max-w-full lg:grid-cols-2">
+                <div className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-900">
                   <div className="px-4 py-5 sm:p-6">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-dark-high-emphasis">
+                    <h3 className="dark:text-dark-high-emphasis text-lg leading-6 font-medium text-gray-900">
                       Modules Progress
                     </h3>
                     <div className="mt-6">
@@ -207,9 +168,9 @@ export default function Template(props) {
                     </div>
                   </div>
                 </div>
-                <div className="bg-white dark:bg-gray-900 shadow sm:rounded-lg">
+                <div className="bg-white shadow-sm sm:rounded-lg dark:bg-gray-900">
                   <div className="px-4 py-5 sm:p-6">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-dark-high-emphasis">
+                    <h3 className="dark:text-dark-high-emphasis text-lg leading-6 font-medium text-gray-900">
                       Problems Progress
                     </h3>
                     <div className="mt-6">
@@ -223,17 +184,21 @@ export default function Template(props) {
               </div>
             </div>
           </div>
-          <DottedLineContainer className="py-12 px-4 max-w-screen-xl mx-auto">
+          <div className="syllabus-dotted-line-container mx-auto max-w-(--breakpoint-xl) space-y-6 px-4 py-12">
             {section.map(category => (
-              <SectionContainer key={category.name}>
-                <div className="flex-1 md:text-right pr-12 group">
-                  <h2 className="text-2xl font-semibold leading-6 py-3 text-gray-500 dark:text-dark-med-emphasis group-hover:text-gray-800 dark:group-hover:text-dark-high-emphasis transition">
+              <div
+                key={category.name}
+                className="group/category flex flex-col md:flex-row"
+              >
+                <div className="flex-1 pr-12 md:text-right">
+                  <h2 className="dark:text-dark-med-emphasis dark:group-hover/category:text-dark-high-emphasis py-3 text-2xl leading-6 font-semibold text-gray-500 transition group-hover/category:text-gray-800">
                     {category.name}
                   </h2>
-                  <div className="leading-6 py-3 text-gray-500 dark:text-dark-med-emphasis group-hover:text-gray-800 dark:group-hover:text-dark-high-emphasis transition">
-                    {progressBarForCategory(category)}
+                  <div className="dark:text-dark-med-emphasis dark:group-hover/category:text-dark-high-emphasis py-3 leading-6 text-gray-500 transition group-hover/category:text-gray-800">
+                    {/* eslint-disable-next-line react-hooks/rules-of-hooks */}
+                    {useProgressBarForCategory(category)}
                   </div>
-                  <p className="md:max-w-sm md:ml-auto text-gray-400 dark:text-gray-500 dark:group-hover:text-dark-med-emphasis group-hover:text-gray-600 transition">
+                  <p className="dark:group-hover/category:text-dark-med-emphasis text-gray-400 transition group-hover/category:text-gray-600 md:ml-auto md:max-w-sm dark:text-gray-500">
                     {category.description}
                   </p>
                 </div>
@@ -247,64 +212,60 @@ export default function Template(props) {
                           moduleIDToSectionMap[item.frontmatter.id],
                           item.frontmatter.title,
                           item.frontmatter.description,
-                          item.frontmatter.frequency,
+                          item.frontmatter.frequency as ModuleFrequency,
                           item.isIncomplete,
                           item.cppOc,
                           item.javaOc,
                           item.pyOc,
                           [],
-                          item.fields.gitAuthorTime
+                          item.fields?.gitAuthorTime
                         )
                       }
                     />
                   ))}
                 </div>
-              </SectionContainer>
+              </div>
             ))}
-          </DottedLineContainer>
+          </div>
         </main>
       </div>
     </Layout>
   );
 }
 export const pageQuery = graphql`
-  query ($division: String!) {
+  query Syllabus($division: String!) {
     modules: allXdm(
       filter: {
         fileAbsolutePath: { regex: "/content/" }
         fields: { division: { eq: $division } }
       }
     ) {
-      edges {
-        node {
+      nodes {
+        id
+        frontmatter {
+          title
           id
-          frontmatter {
-            title
-            id
-            description
-            frequency
-          }
-          isIncomplete
-          cppOc
-          javaOc
-          pyOc
-          fields {
-            gitAuthorTime
-          }
+          description
+          frequency
+        }
+        isIncomplete
+        cppOc
+        javaOc
+        pyOc
+        fields {
+          gitAuthorTime
         }
       }
     }
     problems: allProblemInfo(
       filter: { module: { fields: { division: { eq: $division } } } }
     ) {
-      edges {
-        node {
-          uniqueId
-          name
-          module {
-            frontmatter {
-              id
-            }
+      nodes {
+        uniqueId
+        name
+        module {
+          frontmatter {
+            id
           }
         }
       }

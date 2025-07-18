@@ -71,7 +71,7 @@ const MODULE_ORDERING: { [key in SectionID]: Chapter[] } = {
   bronze: [
     {
       name: 'Getting Started',
-      items: ['time-comp', 'intro-ds', 'simulation', 'rect-geo'],
+      items: ['time-comp', 'intro-ds', 'simulation'],
     },
     {
       name: 'Complete Search',
@@ -83,7 +83,7 @@ const MODULE_ORDERING: { [key in SectionID]: Chapter[] } = {
     },
     {
       name: 'Additional',
-      items: ['ad-hoc', 'intro-greedy', 'intro-graphs'],
+      items: ['ad-hoc', 'intro-greedy', 'intro-graphs', 'rect-geo'],
     },
     {
       name: 'Conclusion',
@@ -99,12 +99,12 @@ const MODULE_ORDERING: { [key in SectionID]: Chapter[] } = {
     {
       name: 'Sorting & Searching',
       items: [
-        'sorting-custom',
         'two-pointers',
-        'intro-sorted-sets',
-        'custom-cpp-stl',
-        'greedy-sorting',
+        'binary-search-sorted-array',
         'binary-search',
+        'sorting-custom',
+        'greedy-sorting',
+        'priority-queues',
       ],
     },
     {
@@ -156,7 +156,13 @@ const MODULE_ORDERING: { [key in SectionID]: Chapter[] } = {
     },
     {
       name: 'Data Structures',
-      items: ['stacks', 'sliding-window', 'PURS'],
+      items: [
+        'intro-sorted-sets',
+        'custom-cpp-stl',
+        'stacks',
+        'sliding-window',
+        'PURS',
+      ],
     },
     {
       name: 'Trees',
@@ -165,7 +171,7 @@ const MODULE_ORDERING: { [key in SectionID]: Chapter[] } = {
     {
       name: 'Additional Topics',
       description: 'Rarely required.',
-      items: ['string-hashing', 'hashmaps', 'meet-in-the-middle'],
+      items: ['hashing', 'hashmaps', 'meet-in-the-middle', 'ternary-search'],
     },
     {
       name: 'Conclusion',
@@ -188,7 +194,14 @@ const MODULE_ORDERING: { [key in SectionID]: Chapter[] } = {
     },
     {
       name: 'Trees',
-      items: ['binary-jump', 'merging', 'hld', 'centroid'],
+      items: [
+        'binary-jump',
+        'merging',
+        'hld',
+        'centroid',
+        'VT',
+        'kruskal-tree',
+      ],
     },
     {
       name: 'Geometry',
@@ -196,7 +209,7 @@ const MODULE_ORDERING: { [key in SectionID]: Chapter[] } = {
     },
     {
       name: 'Misc. Topics',
-      items: ['matrix-expo', 'bitsets', 'DC-DP'],
+      items: ['PIE', 'matrix-expo', 'bitsets', 'DC-DP', 'dp-sos'],
     },
     {
       name: 'Conclusion',
@@ -234,7 +247,7 @@ const MODULE_ORDERING: { [key in SectionID]: Chapter[] } = {
     },
     {
       name: 'Dynamic Programming',
-      items: ['comb-sub', 'dp-more', 'dp-sos'],
+      items: ['comb-sub', 'dp-broken-profile', 'dp-more'],
     },
     {
       name: 'Flows',
@@ -252,11 +265,13 @@ const MODULE_ORDERING: { [key in SectionID]: Chapter[] } = {
       name: 'Misc. Topics',
       items: [
         'extend-euclid',
+        'catalan',
         'xor-basis',
         'fracturing-search',
         'game-theory',
         'multiplicative',
         'matroid-isect',
+        'random',
         'interactive',
         'vectorization',
       ],
@@ -283,7 +298,7 @@ export const SECTION_SEO_DESCRIPTION: { [key in SectionID]: string } = {
     'Topics for USACO Bronze include time complexity, data structures, sorting, simulation, complete search, ad hoc, greedy, graphs, rectangle geometry, sets and maps, and recursion.',
   silver:
     'Topics for USACO Silver include binary search on the answer, prefix sums, two pointers, dfs, floodfill, trees, custom comparators, greedy with sorting, and more!',
-  gold: 'Topics for USACO Gold include dynamic programming, union-find, shortest paths, point update range sum, topological sort, minimum spanning trees, euler tour, string hashing, and more!',
+  gold: 'Topics for USACO Gold include dynamic programming, union-find, shortest paths, point update range sum, topological sort, minimum spanning trees, euler tour, hashing, and more!',
   plat: 'Topics for USACO Platinum include segment trees, advanced tree techniques, advanced dynamic programming, computational geometry, matrix exponentiation, and more!',
   adv: 'Topics usually outside the scope of most USACO contests include segment tree beats, treaps, slope trick, strongly connected components, max-flow, suffix arrays, fast fourier transform, and more!',
 };

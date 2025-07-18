@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/browser';
 import { getAuth, onAuthStateChanged, signOut, User } from 'firebase/auth';
 import {
   doc,
@@ -37,7 +36,6 @@ export type UserData = {
     season: string;
   };
   lang: Language;
-  lastReadAnnouncement: string;
   lastViewedModule: string;
   lastVisitDate: number; // timestamp
   numPageviews: number;
@@ -91,7 +89,6 @@ export const assignDefaultsToUserData = (data: object): UserData => {
       season: '',
     },
     lang: 'cpp',
-    lastReadAnnouncement: '',
     lastViewedModule: '',
     lastVisitDate: new Date().getTime(),
     numPageviews: 0,
@@ -230,11 +227,6 @@ export const UserDataProvider = ({
           },
           error: error => {
             toast.error(error.message);
-            Sentry.captureException(error, {
-              extra: {
-                userId: user.uid,
-              },
-            });
           },
         });
       }
@@ -290,7 +282,7 @@ export const UserDataProvider = ({
      * Sometimes, such as when we just linked a Github account to a Google account,
      * firebaseUser changes, but React doesn't know about the change so it doesn't rerender.
      * This function forces React to update firebaseUser and trigger any rerenders
-     * that might be necessary. This funcation is used in SignInModal.tsx,
+     * that might be necessary. This function is used in SignInModal.tsx,
      * when someone links a Google or Github account, causing firebaseUser to change,
      * but onAuthStateChanged doesn't rereun.
      */
@@ -339,7 +331,7 @@ export const UserDataProvider = ({
               toast.error(
                 'Failed to sync to server: ' +
                   err +
-                  '. Please submit an error report on Github with developer console messages.',
+                  '. Please submit an error report on GitHub with developer console messages.',
                 {
                   duration: Infinity,
                 }

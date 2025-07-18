@@ -3,15 +3,16 @@ import React from 'react';
 import { Instance } from 'tippy.js';
 import { useDarkMode } from '../../../context/DarkModeContext';
 import useUserSolutionsForProblem from '../../../hooks/useUserSolutionsForProblem';
-import { isUsaco, ProblemInfo } from '../../../models/problem';
+import { getProblemURL, isUsaco, ProblemInfo } from '../../../models/problem';
 import TextTooltip from '../../Tooltip/TextTooltip';
+import { DivisionProblemInfo } from './DivisionList/DivisionProblemInfo';
 import ProblemListItemSolution from './ProblemListItemSolution';
 import { ProblemsListItemProps } from './ProblemsListItem';
 
 function ViewSolutionsContent({
   problem,
 }: {
-  problem: ProblemInfo;
+  problem: ProblemInfo | DivisionProblemInfo;
 }): JSX.Element {
   const { solutions, currentUserSolutions } =
     useUserSolutionsForProblem(problem);
@@ -28,7 +29,7 @@ function ViewSolutionsContent({
           {viewSolutionsContent}
         </TextTooltip>
         <svg
-          className="h-5 w-5 text-green-400 inline-block ml-1"
+          className="ml-1 inline-block h-5 w-5 text-green-400"
           viewBox="0 0 20 20"
           fill="currentColor"
         >
@@ -43,9 +44,10 @@ function ViewSolutionsContent({
   }
   return (
     <a
-      className="focus:outline-none block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900"
+      className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-hidden dark:text-gray-300 dark:hover:bg-gray-800"
       href={`/problems/${problem.uniqueId}/user-solutions`}
       target="_blank"
+      rel="noreferrer"
     >
       {viewSolutionsContent}
     </a>
@@ -57,11 +59,26 @@ export default function ProblemsListItemDropdown(
 ) {
   const [copied, setCopied] = React.useState(false);
 
-  const { problem, isFocusProblem } = props;
-
+  const { problem, isDivisionTable, isFocusProblem } = props;
   const darkMode = useDarkMode();
+
   const solutionContent = isFocusProblem ? (
     <></>
+  ) : isDivisionTable ? (
+    props?.problem?.solution?.kind == 'internal' ? (
+      <a
+        className={`group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800`}
+        href={`${getProblemURL(problem)}/solution`}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <div className="text-left">
+          {props.problem.solution.hasHints && 'Hints + '}Internal Sol
+        </div>
+      </a>
+    ) : (
+      <></>
+    )
   ) : (
     <ProblemListItemSolution
       problem={props.problem}
@@ -82,7 +99,7 @@ export default function ProblemsListItemDropdown(
             <ViewSolutionsContent problem={problem} />
             <button
               type="button"
-              className="focus:outline-none block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900"
+              className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 focus:outline-hidden dark:text-gray-300 dark:hover:bg-gray-800"
               onClick={e => {
                 e.preventDefault();
                 setCopied(true);
@@ -97,7 +114,7 @@ export default function ProblemsListItemDropdown(
             </button>
             {isUsaco(problem.source) && (
               <a
-                className="!font-normal focus:outline-none block w-full text-left px-4 py-2 text-sm !text-gray-700 dark:!text-gray-300 hover:!bg-gray-100 dark:hover:!bg-gray-800 hover:!text-gray-900"
+                className="block w-full px-4 py-2 text-left text-sm font-normal! text-gray-700! hover:bg-gray-100! hover:text-gray-900! focus:outline-hidden dark:text-gray-300! dark:hover:bg-gray-800!"
                 href={`https://ide.usaco.guide/usaco/${problem.uniqueId.substring(
                   problem.uniqueId.indexOf('-') + 1
                 )}`}
@@ -120,11 +137,12 @@ export default function ProblemsListItemDropdown(
       interactive={true}
       onShow={() => setIsDropdownShown(true)}
       onHidden={() => setIsDropdownShown(false)}
+      appendTo={() => document.body}
     >
-      <button className="focus:outline-none w-8 h-8 inline-flex items-center justify-center text-gray-400 rounded-full bg-transparent hover:text-gray-500 dark:hover:text-gray-300">
+      <button className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-gray-400 hover:text-gray-500 focus:outline-hidden dark:hover:text-gray-300">
         {/* Heroicon name: solid/dots-vertical */}
         <svg
-          className="w-5 h-5"
+          className="h-5 w-5"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
           fill="currentColor"

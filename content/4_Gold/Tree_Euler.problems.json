@@ -10,8 +10,8 @@
       "isStarred": false,
       "tags": ["Euler Tour"],
       "solutionMetadata": {
-        "kind": "sketch",
-        "sketch": "equivalent to https://judge.yosupo.jp/problem/vertex_add_subtree_sum"
+        "kind": "in-module",
+        "moduleId": "tree-euler"
       }
     }
   ],
@@ -53,7 +53,8 @@
       "isStarred": false,
       "tags": [],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "tree-euler"
       }
     }
   ],
@@ -79,7 +80,8 @@
       "isStarred": false,
       "tags": ["Euler Tour", "PURS"],
       "solutionMetadata": {
-        "kind": "internal"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
@@ -135,13 +137,13 @@
       "uniqueId": "cf-1051F",
       "name": "The Shortest Statement",
       "url": "https://codeforces.com/contest/1051/problem/F",
-      "source": "AC",
+      "source": "CF",
       "difficulty": "Normal",
       "isStarred": false,
       "tags": ["Euler Tour"],
       "solutionMetadata": {
         "kind": "autogen-label-from-site",
-        "site": "AC"
+        "site": "CF"
       }
     },
     {
@@ -166,8 +168,8 @@
       "isStarred": true,
       "tags": ["LCA", "PURS"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "AC"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
@@ -179,8 +181,8 @@
       "isStarred": false,
       "tags": ["Euler Tour", "Binary Search"],
       "solutionMetadata": {
-        "kind": "link",
-        "url": "http://www.ioi2009.org/GetResource?id=1969"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
@@ -193,19 +195,6 @@
       "tags": ["Euler Tour", "PURS", "Lazy SegTree"],
       "solutionMetadata": {
         "kind": "internal"
-      }
-    },
-    {
-      "uniqueId": "cf-838B",
-      "name": "Diverging Directions",
-      "url": "https://codeforces.com/contest/838/problem/B",
-      "source": "CF",
-      "difficulty": "Hard",
-      "isStarred": false,
-      "tags": ["Euler Tour", "RURQ"],
-      "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
       }
     },
     {

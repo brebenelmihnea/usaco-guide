@@ -31,15 +31,15 @@ function SortableItem(props: {
   userPoints: number | null;
   isBeingDragged: boolean;
 }) {
-  // probably post was just deleted before items updated
-  if (!props.post) return null;
-
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: props.id });
 
+  // probably post was just deleted before items updated
+  if (!props.post) return null;
+
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition: transition ?? undefined,
   };
 
   return (
@@ -51,7 +51,7 @@ function SortableItem(props: {
         isBeingDragged={props.isBeingDragged}
         dragHandle={
           <div
-            className="self-stretch flex items-center px-2"
+            className="flex items-center self-stretch px-2"
             {...attributes}
             {...listeners}
           >
@@ -68,7 +68,7 @@ export default function Feed(): JSX.Element {
   const { updatePostOrdering } = useGroupActions();
 
   const [activeId, setActiveId] = useState(null);
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState<string[]>([]);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -92,7 +92,7 @@ export default function Feed(): JSX.Element {
           })
           .sort(sortPostsComparator)
           .reverse()
-          .map(x => x.id)
+          .map(x => x.id!)
       );
     } else {
       setItems(group.groupData.postOrdering);
@@ -123,8 +123,8 @@ export default function Feed(): JSX.Element {
   };
 
   const userLeaderboardData = useUserLeaderboardData(
-    group.activeGroupId,
-    group.activeUserId
+    group.activeGroupId!,
+    group.activeUserId!
   );
 
   return (
@@ -142,13 +142,13 @@ export default function Feed(): JSX.Element {
               items={items}
               strategy={verticalListSortingStrategy}
             >
-              <div className="divide-y divide-solid divide-gray-200 dark:divide-gray-600 sm:divide-none sm:space-y-4">
+              <div className="divide-y divide-solid divide-gray-200 sm:space-y-4 sm:divide-none dark:divide-gray-600">
                 {items.map(id => (
                   <SortableItem
                     key={id}
                     id={id}
-                    group={group.groupData}
-                    post={group.posts.find(x => x.id === id)}
+                    group={group.groupData!}
+                    post={group.posts.find(x => x.id === id)!}
                     userPoints={userLeaderboardData?.[id]?.totalPoints ?? null}
                     isBeingDragged={activeId === id}
                   />
@@ -158,13 +158,13 @@ export default function Feed(): JSX.Element {
             <DragOverlay>
               {activeId ? (
                 <FeedItem
-                  group={group.groupData}
-                  post={group.posts.find(x => x.id === activeId)}
+                  group={group.groupData!}
+                  post={group.posts.find(x => x.id === activeId)!}
                   userPoints={
                     userLeaderboardData?.[activeId]?.totalPoints ?? null
                   }
                   dragHandle={
-                    <div className="self-stretch flex items-center px-2">
+                    <div className="flex items-center self-stretch px-2">
                       <MenuIcon className="h-5 w-5 text-gray-300" />
                     </div>
                   }
@@ -173,14 +173,14 @@ export default function Feed(): JSX.Element {
             </DragOverlay>
           </DndContext>
         ) : (
-          <div className="divide-y divide-solid divide-gray-200 dark:divide-gray-600 sm:divide-none sm:space-y-4">
+          <div className="divide-y divide-solid divide-gray-200 sm:space-y-4 sm:divide-none dark:divide-gray-600">
             {items.map(id => {
               const post = group.posts.find(x => x.id === id);
-              if (!post.isPublished) return null;
+              if (!post!.isPublished) return null;
               return (
                 <FeedItem
-                  group={group.groupData}
-                  post={post}
+                  group={group.groupData!}
+                  post={post!}
                   userPoints={userLeaderboardData?.[id]?.totalPoints ?? null}
                   key={id}
                 />

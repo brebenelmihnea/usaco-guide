@@ -1,6 +1,4 @@
-import { useAtomValue, useUpdateAtom } from 'jotai/utils';
-import babelParser from 'prettier/parser-babel';
-import prettier from 'prettier/standalone';
+import { useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
 import { useState } from 'react';
 import { activeFileAtom, saveFileAtom } from '../../atoms/editor';
@@ -8,9 +6,10 @@ import { EditorContext } from '../../context/EditorContext';
 import { MarkdownProblemListsProvider } from '../../context/MarkdownProblemListsContext';
 import { ProblemSuggestionModalProvider } from '../../context/ProblemSuggestionModalContext';
 import {
-  PROBLEM_DIFFICULTY_OPTIONS,
   ProblemMetadata,
+  PROBLEM_DIFFICULTY_OPTIONS,
 } from '../../models/problem';
+import { formatMarkdown } from '../../utils/prettierFormatter';
 import QuizGeneratorModal from '../QuizGeneratorModal';
 
 const RawMarkdownRenderer = React.lazy(
@@ -19,15 +18,15 @@ const RawMarkdownRenderer = React.lazy(
 
 export const EditorOutput = (): JSX.Element => {
   const activeFile = useAtomValue(activeFileAtom);
-  const saveFile = useUpdateAtom(saveFileAtom);
+  const saveFile = useSetAtom(saveFileAtom);
 
-  const markdown: string | null = activeFile?.markdown;
-  const problems: string | null = activeFile?.problems;
+  const markdown: string = activeFile?.markdown ?? '';
+  const problems: string = activeFile?.problems ?? '';
 
   const [
     markdownProblemListsProviderValue,
     setMarkdownProblemListsProviderValue,
-  ] = useState([]);
+  ] = useState<{ listId: string; problems: any }[]>([]);
   React.useEffect(() => {
     try {
       const parsedProblems = JSON.parse(problems || '{}');
@@ -43,7 +42,7 @@ export const EditorOutput = (): JSX.Element => {
     }
   }, [problems]);
 
-  const handleAddProblem = (
+  const handleAddProblem = async (
     listId: string,
     problemMetadata: ProblemMetadata
   ) => {
@@ -69,20 +68,10 @@ export const EditorOutput = (): JSX.Element => {
     // Use pretty JSON.stringify because it inserts a newline before all objects, which forces prettier to then convert
     // these objects into multiline ones.
     const newContent = JSON.stringify(parsedOldFileData, null, 2) + '\n';
-    const formattedNewContent = prettier.format(newContent, {
-      endOfLine: 'lf',
-      semi: true,
-      singleQuote: true,
-      tabWidth: 2,
-      useTabs: false,
-      trailingComma: 'es5',
-      arrowParens: 'avoid',
-      parser: 'json',
-      plugins: [babelParser],
-    });
+    const formattedNewContent = await formatMarkdown(newContent);
     saveFile({
-      path: activeFile.path,
-      update: prev => ({
+      path: activeFile!.path,
+      update: async prev => ({
         ...prev,
         problems: formattedNewContent,
       }),
@@ -91,19 +80,23 @@ export const EditorOutput = (): JSX.Element => {
 
   return (
     <div className="markdown p-4">
-      <EditorContext.Provider
-        value={{
-          addProblem: handleAddProblem,
-          inEditor: true,
-        }}
-      >
-        <MarkdownProblemListsProvider value={markdownProblemListsProviderValue}>
-          <ProblemSuggestionModalProvider>
-            <RawMarkdownRenderer markdown={markdown} problems={problems} />
-            <QuizGeneratorModal />
-          </ProblemSuggestionModalProvider>
-        </MarkdownProblemListsProvider>
-      </EditorContext.Provider>
+      <React.Suspense fallback={<p>Loading...</p>}>
+        <EditorContext.Provider
+          value={{
+            addProblem: handleAddProblem,
+            inEditor: true,
+          }}
+        >
+          <MarkdownProblemListsProvider
+            value={markdownProblemListsProviderValue}
+          >
+            <ProblemSuggestionModalProvider>
+              <RawMarkdownRenderer markdown={markdown} problems={problems} />
+              <QuizGeneratorModal />
+            </ProblemSuggestionModalProvider>
+          </MarkdownProblemListsProvider>
+        </EditorContext.Provider>
+      </React.Suspense>
     </div>
   );
 };

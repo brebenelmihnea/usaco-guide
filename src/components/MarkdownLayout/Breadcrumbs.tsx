@@ -1,24 +1,23 @@
 import { Link } from 'gatsby';
 import * as React from 'react';
-import { useContext } from 'react';
 import { SECTION_LABELS } from '../../../content/ordering';
-import MarkdownLayoutContext from '../../context/MarkdownLayoutContext';
+import { useMarkdownLayout } from '../../context/MarkdownLayoutContext';
 import { SolutionInfo } from '../../models/solution';
 
 const Breadcrumbs = () => {
-  const moduleLayoutInfo = useContext(MarkdownLayoutContext);
+  const moduleLayoutInfo = useMarkdownLayout();
   const module = moduleLayoutInfo.markdownLayoutInfo;
   if (module instanceof SolutionInfo) return null;
   return (
-    <nav className="flex flex-wrap items-center text-sm leading-loose font-medium text-gray-500 dark:text-dark-med-emphasis">
+    <nav className="dark:text-dark-med-emphasis flex flex-wrap items-center text-sm leading-loose font-medium text-gray-500">
       <Link
         to="/dashboard/"
-        className="hover:text-gray-700 dark:hover:text-dark-high-emphasis transition"
+        className="dark:hover:text-dark-high-emphasis transition hover:text-gray-700"
       >
         Home
       </Link>
       <svg
-        className="flex-shrink-0 mx-2 h-5 w-5 text-gray-400"
+        className="mx-2 h-5 w-5 shrink-0 text-gray-400"
         viewBox="0 0 20 20"
         fill="currentColor"
       >
@@ -30,12 +29,12 @@ const Breadcrumbs = () => {
       </svg>
       <Link
         to={`/${module.section}/`}
-        className="hover:text-gray-700 dark:hover:text-dark-high-emphasis transition"
+        className="dark:hover:text-dark-high-emphasis transition hover:text-gray-700"
       >
         {SECTION_LABELS[module.section]}
       </Link>
       <svg
-        className="flex-shrink-0 mx-2 h-5 w-5 text-gray-400"
+        className="mx-2 h-5 w-5 shrink-0 text-gray-400"
         viewBox="0 0 20 20"
         fill="currentColor"
       >

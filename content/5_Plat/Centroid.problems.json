@@ -24,8 +24,8 @@
       "isStarred": false,
       "tags": ["Centroid"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
+        "kind": "in-module",
+        "moduleId": "centroid"
       }
     }
   ],
@@ -50,7 +50,7 @@
       "source": "Baltic OI",
       "difficulty": "Easy",
       "isStarred": true,
-      "tags": ["Centroid"],
+      "tags": ["Centroid", "Small to Large"],
       "solutionMetadata": {
         "kind": "autogen-label-from-site",
         "site": "CF"
@@ -63,7 +63,7 @@
       "source": "CSES",
       "difficulty": "Easy",
       "isStarred": true,
-      "tags": ["Centroid"],
+      "tags": ["Centroid", "Small to Large"],
       "solutionMetadata": {
         "kind": "internal"
       }
@@ -114,8 +114,8 @@
       "isStarred": true,
       "tags": ["Centroid"],
       "solutionMetadata": {
-        "kind": "USACO",
-        "usacoId": "817"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {

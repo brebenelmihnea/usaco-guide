@@ -3,9 +3,9 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { SECTION_LABELS } from '../../content/ordering';
-import MarkdownLayout from '../components/MarkdownLayout/MarkdownLayout';
 import Layout from '../components/layout';
 import Markdown from '../components/markdown/Markdown';
+import MarkdownLayout from '../components/MarkdownLayout/MarkdownLayout';
 import SEO from '../components/seo';
 import { ConfettiProvider } from '../context/ConfettiContext';
 import { MarkdownProblemListsProvider } from '../context/MarkdownProblemListsContext';
@@ -22,9 +22,11 @@ export default function Template(props): JSX.Element {
     // source: https://miguelpiedrafita.com/snippets/scrollToHash
     const { hash } = location;
     if (!hash) return;
+    if (!isLoaded) return;
     window.requestAnimationFrame(() => {
       try {
         const anchor = document.getElementById(hash.substring(1));
+        if (!anchor) throw new Error(`The anchor "${hash}" doesn't exist`);
         const offset = anchor.getBoundingClientRect().top + window.scrollY;
         window.scroll({ top: offset, left: 0 });
       } catch (e) {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DarkModeContext } from './DarkModeContext';
-import { useIsUserDataLoaded } from './UserDataContext/UserDataContext';
 import { useThemeSetting } from './UserDataContext/properties/simpleProperties';
+import { useIsUserDataLoaded } from './UserDataContext/UserDataContext';
 
 export function DarkModeProvider({ children }) {
   const theme = useThemeSetting();
@@ -27,7 +27,9 @@ export function DarkModeProvider({ children }) {
   }, false);
 
   React.useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded) {
+      setDarkMode(document.documentElement.classList.contains('dark'));
+    }
     if (theme === 'system') {
       if (!window.matchMedia) {
         setDarkMode(false);

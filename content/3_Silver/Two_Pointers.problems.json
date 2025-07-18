@@ -10,11 +10,12 @@
       "isStarred": true,
       "tags": ["2P"],
       "solutionMetadata": {
-        "kind": "internal"
+        "kind": "in-module",
+        "moduleId": "two-pointers"
       }
     }
   ],
-  "ad": [
+  "general": [
     {
       "uniqueId": "cses-1640",
       "name": "Sum of Two Values",
@@ -22,7 +23,7 @@
       "source": "CSES",
       "difficulty": "Easy",
       "isStarred": true,
-      "tags": [],
+      "tags": ["2P", "Sorting"],
       "solutionMetadata": {
         "kind": "internal"
       }
@@ -34,10 +35,9 @@
       "source": "CSES",
       "difficulty": "Easy",
       "isStarred": false,
-      "tags": [],
+      "tags": ["Sliding Window"],
       "solutionMetadata": {
-        "kind": "CPH",
-        "section": "8.1"
+        "kind": "internal"
       }
     },
     {
@@ -71,7 +71,7 @@
       "source": "CF",
       "difficulty": "Easy",
       "isStarred": false,
-      "tags": ["2P"],
+      "tags": ["2P", "Binary Search"],
       "solutionMetadata": {
         "kind": "internal"
       }
@@ -95,10 +95,9 @@
       "source": "CF",
       "difficulty": "Normal",
       "isStarred": false,
-      "tags": ["2P"],
+      "tags": ["2P", "Sorting", "Sliding Window"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
+        "kind": "internal"
       }
     },
     {
@@ -127,7 +126,7 @@
     },
     {
       "uniqueId": "cf-814C",
-      "name": "Garland",
+      "name": "An impassioned circulation of affection",
       "url": "https://codeforces.com/problemset/problem/814/C",
       "source": "CF",
       "difficulty": "Normal",

@@ -10,7 +10,8 @@
       "isStarred": false,
       "tags": ["DSU"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "dsu"
       }
     }
   ],
@@ -96,7 +97,21 @@
       "isStarred": false,
       "tags": ["DSU"],
       "solutionMetadata": {
-        "kind": "internal"
+        "kind": "internal",
+        "hasHints": true
+      }
+    },
+    {
+      "uniqueId": "cf-468B",
+      "name": "Two Sets",
+      "url": "https://codeforces.com/contest/468/problem/B",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": ["DSU"],
+      "solutionMetadata": {
+        "kind": "internal",
+        "hasHints": true
       }
     }
   ],
@@ -136,19 +151,6 @@
       "tags": ["DSU"],
       "solutionMetadata": {
         "kind": "internal"
-      }
-    },
-    {
-      "uniqueId": "cf-468B",
-      "name": "Two Sets",
-      "url": "https://codeforces.com/contest/468/problem/B",
-      "source": "CF",
-      "difficulty": "Hard",
-      "isStarred": false,
-      "tags": ["DSU", "2SAT"],
-      "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
       }
     },
     {

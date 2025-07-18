@@ -10,25 +10,12 @@
       "isStarred": false,
       "tags": ["LCT"],
       "solutionMetadata": {
-        "kind": "sketch",
-        "sketch": " LCT isn't needed because the queries are offline"
+        "kind": "in-module",
+        "moduleId": "link-cut-tree"
       }
     }
   ],
   "con": [
-    {
-      "uniqueId": "cf-1109F",
-      "name": "Silence's Sounds",
-      "url": "https://codeforces.com/contest/1109/problem/F",
-      "source": "CF",
-      "difficulty": "Easy",
-      "isStarred": false,
-      "tags": ["LCT"],
-      "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
-      }
-    },
     {
       "uniqueId": "spoj-DynamicLCA",
       "name": "Dynamic LCA",
@@ -38,7 +25,8 @@
       "isStarred": false,
       "tags": ["LCT"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "link-cut-tree"
       }
     }
   ],
@@ -52,7 +40,8 @@
       "isStarred": false,
       "tags": ["LCT"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "link-cut-tree"
       }
     }
   ],
@@ -196,7 +185,8 @@
       "isStarred": false,
       "tags": ["LCT"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "link-cut-tree"
       }
     }
   ],

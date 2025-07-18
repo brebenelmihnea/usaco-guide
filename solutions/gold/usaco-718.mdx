@@ -7,6 +7,8 @@ author: Brad Ma, Jesse Choe
 
 [Official Analysis (C++)](http://www.usaco.org/current/data/sol_nocross_gold_feb17.html)
 
+## Explanation
+
 Let's define $\texttt{dp}[i][j]$ as the maximum number of disjoint friendly crosswalks up to field $i$ on the first side of the road and field $j$ on the second side of the road. We can build a crosswalk between fields $i$ and $j$ as long as there isn't a crosswalk between fields $i$, $j - 1$ and $i - 1$, $j$. Thus, $\texttt{dp}[i][j] = \max(\texttt{dp}[i - 1][j], \texttt{dp}[i][j - 1], \texttt{dp}[i - 1][j - 1] + (|\texttt{id}[i] - \texttt{id}[j]| \leq 4))$, where $\texttt{id}[i]$ and $\texttt{id}[j]$ represent the breed IDs of the cows in the $i$-th and $j$-th fields, respectively.
 
 The answer is $\texttt{dp}[N][N]$.
@@ -53,6 +55,7 @@ int main() {
 	cout << dp[n][n] << endl;
 }
 ```
+
 </CPPSection>
 <JavaSection>
 
@@ -109,5 +112,44 @@ public class NoCross {
 	// CodeSnip{Kattio}
 }
 ```
+
 </JavaSection>
+<PySection>
+
+```py
+with open("nocross.in") as read:
+	n = int(read.readline().strip())
+
+	"""
+	id1 represents the breed ID of the fields
+	on the first side of the road
+	id2 represents the breed ID of the fields
+	on the other side of the road.
+	"""
+	id1 = [0]
+	id2 = [0]
+	for _ in range(n):
+		x = int(read.readline().strip())
+		id1.append(x)
+	for _ in range(n):
+		x = int(read.readline().strip())
+		id2.append(x)
+
+dp = [[0] * (n + 1) for _ in range(n + 1)]
+for i in range(1, n + 1):
+	for j in range(1, n + 1):
+		"""
+		We can either build a new crosswalk between
+		i and j or not build a new crosswalk.
+		"""
+		dp[i][j] = max(
+			dp[i - 1][j],
+			dp[i][j - 1],
+			dp[i - 1][j - 1] + (1 if abs(id1[i] - id2[j]) <= 4 else 0),
+		)
+
+print(dp[n][n], file=open("nocross.out", "w"))
+```
+
+</PySection>
 </LanguageSection>

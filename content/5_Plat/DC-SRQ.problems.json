@@ -10,7 +10,8 @@
       "isStarred": false,
       "tags": [],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "DC-SRQ"
       }
     }
   ],
@@ -66,8 +67,8 @@
       }
     },
     {
-      "uniqueId": "noi-supperbox",
-      "name": "Supperbox",
+      "uniqueId": "noi-18-supperbox",
+      "name": "Estelle's Supper Box",
       "url": "https://codebreaker.xyz/problem/supperbox",
       "source": "NOI",
       "difficulty": "Normal",

@@ -23,15 +23,8 @@ export default function TrustedBy() {
       });
   }, []);
 
-  const usersText =
-    Math.floor(numUsers / 1000) +
-    '.' +
-    Math.floor((numUsers % 1000) / 100) +
-    'k';
-  const pageviewsText =
-    numPageviews >= 1000000
-      ? (numPageviews / 1000000).toFixed(2) + 'M'
-      : Math.floor(numPageviews / 1000) + 'k';
+  const usersText = Math.floor(numUsers / 1000) + 'k';
+  const pageviewsText = (numPageviews / 1000000).toFixed(1) + 'M';
 
   return (
     <div className="max-w-4xl">
@@ -41,10 +34,10 @@ export default function TrustedBy() {
             Registered Users
           </dt>
           <dd
-            className={`order-1 text-4xl sm:text-5xl leading-normal sm:leading-normal font-extrabold text-blue-500 ${
+            className={`order-1 text-4xl leading-normal font-extrabold text-blue-500 sm:text-5xl sm:leading-normal ${
               numUsers === -1 ? 'opacity-0' : 'opacity-100'
             } transition`}
-            title={numUsers !== -1 ? `${numUsers} registered users` : null}
+            title={numUsers !== -1 ? `${numUsers} registered users` : undefined}
           >
             {usersText}
           </dd>
@@ -54,20 +47,22 @@ export default function TrustedBy() {
             Pageviews
           </dt>
           <dd
-            className={`order-1 text-4xl sm:text-5xl leading-normal sm:leading-normal font-extrabold text-blue-500 ${
+            className={`order-1 text-4xl leading-normal font-extrabold text-blue-500 sm:text-5xl sm:leading-normal ${
               numPageviews === -1 ? 'opacity-0' : 'opacity-100'
             } transition`}
-            title={numPageviews !== -1 ? `${numPageviews} pageviews` : null}
+            title={
+              numPageviews !== -1 ? `${numPageviews} pageviews` : undefined
+            }
           >
             {pageviewsText}
           </dd>
         </div>
         <div className="flex flex-col py-2 sm:p-0">
           <dt className="order-2 text-lg leading-6 font-medium text-gray-600 dark:text-gray-400">
-            Github Stars
+            GitHub Stars
           </dt>
           <dd
-            className={`order-1 text-4xl sm:text-5xl leading-normal sm:leading-normal font-extrabold text-blue-500 ${
+            className={`order-1 text-4xl leading-normal font-extrabold text-blue-500 sm:text-5xl sm:leading-normal ${
               numStars === -1 ? 'opacity-0' : 'opacity-100'
             } transition`}
           >

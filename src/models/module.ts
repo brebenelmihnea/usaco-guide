@@ -1,3 +1,4 @@
+import { BaseHit, Hit } from 'instantsearch.js';
 import { SectionID } from '../../content/ordering';
 
 export type MarkdownLayoutSidebarModuleLinkInfo = {
@@ -14,25 +15,25 @@ export class ModuleLinkInfo {
     public id: string,
     public section: SectionID,
     public title: string,
-    public description?: string,
+    public description?: string | null,
     public frequency?: ModuleFrequency,
-    public isIncomplete?: boolean,
-    public cppOc: number = 0,
-    public javaOc: number = 0,
-    public pyOc: number = 0,
+    public isIncomplete?: boolean | null,
+    public cppOc: number | null = 0,
+    public javaOc: number | null = 0,
+    public pyOc: number | null = 0,
     public probs?: any,
     public gitAuthorTime?: any
   ) {
-    if (this.id === 'using-this-guide') {
-      // The "Using This Guide" module is complete already, but it contains an <IncompleteModule> tag
-      // We want to ignore it and manually mark it as complete
+    if (this.id === 'using-this-guide' || this.id === 'working-mdx') {
+      // The "Using This Guide" and "Working With MDX" modules are complete already, but
+      // they contain an <IncompleteModule> tag. We want to ignore it and manually mark it as complete.
       this.isIncomplete = false;
     }
     this.url = `/${section}/${id}`;
   }
 }
 
-export type ModuleFrequency = null | 0 | 1 | 2 | 3 | 4;
+export type ModuleFrequency = 0 | 1 | 2 | 3 | 4;
 
 export type TOCHeading = {
   depth: number;
@@ -81,3 +82,13 @@ export const ModuleProgressOptions: ModuleProgress[] = [
   'Skipped',
   'Ignored',
 ];
+
+export type AlgoliaModuleInfo = {
+  title: string;
+  description: string;
+  content: string;
+  id: string;
+  division: SectionID;
+};
+
+export type AlgoliaModuleInfoHit = Hit<BaseHit> & AlgoliaModuleInfo;

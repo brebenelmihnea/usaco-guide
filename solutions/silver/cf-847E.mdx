@@ -5,7 +5,7 @@ title: Packmen
 author: Kevin Sheng
 ---
 
-**Time Complexity:** $\mathcal{O}(N\log N)$
+## Explanation
 
 Binary search on the minimum time it will take for all the Packmen to eat all
 the pellets. In that case, we would have to check whether the Packmen can eat
@@ -45,8 +45,11 @@ first goes to the right and then to the left, and another where the Packman
 first goes to the _left_ and then to the right. We calculate the subarray of
 pellets eaten in both of these cases and assign the larger one to the Packman.
 
-<LanguageSection>
+## Implementation
 
+**Time Complexity:** $\mathcal{O}(N\log N)$
+
+<LanguageSection>
 <CPPSection>
 
 ```cpp
@@ -146,7 +149,6 @@ int main() {
 ```
 
 </CPPSection>
-
 <JavaSection>
 
 ```java
@@ -157,8 +159,7 @@ import java.util.ArrayList;
 
 public class Packmen {
 	public static void main(String[] args) throws IOException {
-		BufferedReader read =
-		    new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 		read.readLine();
 		char[] field = read.readLine().toUpperCase().toCharArray();
 		ArrayList<Integer> packmen = new ArrayList<>();
@@ -207,8 +208,7 @@ public class Packmen {
 				 * don't have to eat anything to the left,
 				 * so let's go to the right as much as possible
 				 */
-				while (foodPointer < foodAmt &&
-				       food.get(foodPointer) - p <= time) {
+				while (foodPointer < foodAmt && food.get(foodPointer) - p <= time) {
 					foodPointer++;
 				}
 			} else {
@@ -219,8 +219,7 @@ public class Packmen {
 				int rightFreeTime = time - 2 * leftTime;
 				int leftFirst = -1;
 				while (foodPointer + leftFirst + 1 < foodAmt &&
-				       food.get(foodPointer + leftFirst + 1) - p <=
-				           rightFreeTime) {
+				       food.get(foodPointer + leftFirst + 1) - p <= rightFreeTime) {
 					leftFirst++;
 				}
 

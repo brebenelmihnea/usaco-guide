@@ -10,21 +10,23 @@
       "isStarred": false,
       "tags": ["Suffix Array"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "suffix-array"
       }
     }
   ],
   "lcpSam": [
     {
       "uniqueId": "ys-OfSubstrings",
-      "name": "# of Substrings",
+      "name": "Number of Substrings",
       "url": "https://judge.yosupo.jp/problem/number_of_substrings",
       "source": "YS",
       "difficulty": "Easy",
       "isStarred": false,
       "tags": ["Suffix Array"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "suffix-array"
       }
     }
   ],

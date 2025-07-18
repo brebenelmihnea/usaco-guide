@@ -1,14 +1,14 @@
 import {
+  closestCenter,
   DndContext,
   KeyboardSensor,
   PointerSensor,
-  closestCenter,
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
 import {
-  SortableContext,
   arrayMove,
+  SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
@@ -31,14 +31,14 @@ function SortableItem(props: {
   post: PostData;
   problem: ProblemData;
 }) {
-  if (!props.problem) return null;
-
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: props.id });
 
+  if (!props.problem) return null;
+
   const style = {
     transform: CSS.Transform.toString(transform),
-    transition,
+    transition: transition ?? undefined,
   };
 
   return (
@@ -49,7 +49,7 @@ function SortableItem(props: {
         problem={props.problem}
         dragHandle={
           <div
-            className="self-stretch flex items-center px-2"
+            className="flex items-center self-stretch px-2"
             {...attributes}
             {...listeners}
           >
@@ -68,11 +68,11 @@ export default function PostProblems({
 }): JSX.Element {
   const activeGroup = useActiveGroup();
   const { createNewProblem, updateProblemOrdering } = usePostActions(
-    activeGroup.activeGroupId
+    activeGroup.activeGroupId!
   );
   const { problems, isLoading } = useActivePostProblems();
 
-  const [items, setItems] = React.useState([]);
+  const [items, setItems] = React.useState<string[]>([]);
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -106,7 +106,7 @@ export default function PostProblems({
         const newIndex = items.indexOf(over.id);
 
         const newArr = arrayMove<string>(items, oldIndex, newIndex);
-        updateProblemOrdering(post.id, newArr);
+        updateProblemOrdering(post.id!, newArr);
         return newArr;
       });
     }
@@ -116,7 +116,7 @@ export default function PostProblems({
     <section className="mt-8 xl:mt-10">
       <div>
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
-          <div className="pb-4 flex justify-between space-x-4">
+          <div className="flex justify-between space-x-4 pb-4">
             <div>
               <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
                 Problems
@@ -156,27 +156,27 @@ export default function PostProblems({
                       items={items}
                       strategy={verticalListSortingStrategy}
                     >
-                      <div className="divide-y divide-gray-200 dark:divide-gray-700 border-b border-gray-200 dark:border-gray-700">
+                      <div className="divide-y divide-gray-200 border-b border-gray-200 dark:divide-gray-700 dark:border-gray-700">
                         {items.map(problemId => (
                           <SortableItem
                             key={problemId}
                             id={problemId}
-                            group={activeGroup.groupData}
+                            group={activeGroup.groupData!}
                             post={post}
-                            problem={problems.find(x => x.id === problemId)}
+                            problem={problems.find(x => x.id === problemId)!}
                           />
                         ))}
                       </div>
                     </SortableContext>
                   </DndContext>
                 ) : (
-                  <div className="divide-y divide-gray-200 dark:divide-gray-700 border-b border-gray-200 dark:border-gray-700">
+                  <div className="divide-y divide-gray-200 border-b border-gray-200 dark:divide-gray-700 dark:border-gray-700">
                     {items.map(problemId => (
                       <ProblemListItem
                         key={problemId}
-                        group={activeGroup.groupData}
+                        group={activeGroup.groupData!}
                         post={post}
-                        problem={problems.find(x => x.id === problemId)}
+                        problem={problems.find(x => x.id === problemId)!}
                       />
                     ))}
                   </div>

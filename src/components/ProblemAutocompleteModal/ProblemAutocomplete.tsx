@@ -1,29 +1,31 @@
+import { BaseHit, Hit } from 'instantsearch.js';
 import * as React from 'react';
+import { useHits, useSearchBox } from 'react-instantsearch';
 import { AlgoliaProblemInfo } from '../../models/problem';
+
+type AlgoliaProblemInfoHit = Hit<BaseHit> & AlgoliaProblemInfo;
 
 const ProblemAutocompleteHit = ({
   hit,
   onClick,
 }: {
-  hit: AlgoliaProblemInfo;
-  onClick: (problem: AlgoliaProblemInfo) => any;
+  hit: AlgoliaProblemInfoHit;
+  onClick: (problem: AlgoliaProblemInfoHit) => void;
 }) => {
   return (
     <li key={hit.objectID}>
       <button
-        className="p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-left w-full focus:outline-none group hover:bg-light-blue-500 dark:hover:bg-light-blue-700 hover:text-white"
+        className="group w-full rounded-lg bg-gray-50 p-4 text-left hover:bg-sky-500 hover:text-white focus:outline-hidden dark:bg-gray-800 dark:hover:bg-sky-700"
         onClick={() => onClick(hit)}
       >
         <div className="flex items-center justify-between">
-          <span className="font-medium">
-            {hit.source} {hit.name}
-          </span>
+          <span className="font-medium">{`${hit.source}: ${hit.name}`}</span>
           <span>
             {hit.isStarred ? 'Starred • ' : ''}
             {hit.difficulty}
           </span>
         </div>
-        <div className="md:flex md:items-center md:justify-between text-sm text-gray-700 dark:text-gray-300 group-hover:text-light-blue-100">
+        <div className="text-sm text-gray-700 group-hover:text-sky-100 md:flex md:items-center md:justify-between dark:text-gray-300">
           <span>
             Tags: {hit.tags?.length > 0 ? hit.tags.join(', ') : 'None'}
           </span>
@@ -38,42 +40,45 @@ const ProblemAutocompleteHit = ({
   );
 };
 
-export const ProblemAutocomplete = ({
-  hits,
-  currentRefinement,
-  refine,
+export const indexName = `${
+  process.env.GATSBY_ALGOLIA_INDEX_NAME ?? 'dev'
+}_problems`;
+
+export type ProblemAutocompleteProps = {
+  onProblemSelect: (problem: AlgoliaProblemInfoHit) => void;
+  modalIsOpen: boolean;
+};
+
+export function ProblemAutocomplete({
   onProblemSelect,
   modalIsOpen,
-}) => (
-  <div>
+}: ProblemAutocompleteProps) {
+  const { query, refine: setQuery } = useSearchBox();
+  const { hits } = useHits() as { hits: AlgoliaProblemInfoHit[] };
+  return (
     <div>
-      {modalIsOpen ? (
+      <div>
         <input
-          autoFocus
+          autoFocus={modalIsOpen}
           type="text"
           className="input"
           placeholder="Problem Name"
-          value={currentRefinement}
-          onChange={e => refine(e.currentTarget.value)}
+          value={query}
+          onChange={e => setQuery(e.currentTarget.value)}
         />
-      ) : (
-        <input
-          type="text"
-          className="input"
-          placeholder="Problem Name"
-          value={currentRefinement}
-          onChange={e => refine(e.currentTarget.value)}
-        />
-      )}
+      </div>
+      <ul
+        className="mt-2 space-y-2 overflow-y-auto"
+        style={{ height: '40rem' }}
+      >
+        {hits.map(hit => (
+          <ProblemAutocompleteHit
+            hit={hit}
+            key={hit.objectID}
+            onClick={p => onProblemSelect(p)}
+          />
+        ))}
+      </ul>
     </div>
-    <ul className="overflow-y-auto mt-2 space-y-2" style={{ height: '40rem' }}>
-      {hits.map(hit => (
-        <ProblemAutocompleteHit
-          hit={hit}
-          key={hit.objectID}
-          onClick={p => onProblemSelect(p)}
-        />
-      ))}
-    </ul>
-  </div>
-);
+  );
+}

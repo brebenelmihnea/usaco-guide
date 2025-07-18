@@ -1,36 +1,38 @@
 import classNames from 'classnames';
-import { useAtomValue, useUpdateAtom } from 'jotai/utils';
-import babelParser from 'prettier/parser-babel';
-import markdownParser from 'prettier/parser-markdown';
-import prettier from 'prettier/standalone';
+import { useAtomValue, useSetAtom } from 'jotai';
 import * as React from 'react';
-import { useState } from 'react';
 import problemsSchema from '../../../content/problems.schema.json';
 import {
   activeFileAtom,
+  baseTabAtom,
+  editingSolutionAtom,
   monacoEditorInstanceAtom,
   saveFileAtom,
+  tabAtom,
+  trueFileAtom,
+  trueFilePathAtom,
 } from '../../atoms/editor';
+import { DarkModeContext } from '../../context/DarkModeContext';
+import { formatMarkdown, formatProblems } from '../../utils/prettierFormatter';
 import EditorTabBar from './EditorTabBar';
 import { conf as mdxConf, language as mdxLang } from './mdx-lang';
-
-const Editor = React.lazy(() => import('@monaco-editor/react'));
+const Editor = React.lazy(() => import('./BaseEditor'));
 
 export const MainEditorInterface = ({ className }): JSX.Element => {
   const activeFile = useAtomValue(activeFileAtom);
-  const saveFile = useUpdateAtom(saveFileAtom);
-  const setMonacoEditorInstance = useUpdateAtom(monacoEditorInstanceAtom);
-  const [_tab, setTab] = useState<'problems' | 'content'>('content');
-  const isEditingSolution =
-    activeFile && activeFile.path.startsWith('solutions');
-  const tab = isEditingSolution ? 'content' : _tab;
+  const saveFile = useSetAtom(saveFileAtom);
+  const setMonacoEditorInstance = useSetAtom(monacoEditorInstanceAtom);
+  const setTab = useSetAtom(baseTabAtom);
+  const isEditingSolution = useAtomValue(editingSolutionAtom);
+  const tab = useAtomValue(tabAtom);
+  const darkMode = React.useContext(DarkModeContext);
 
-  const markdown: string | null = activeFile?.markdown;
-  const setMarkdown = (x: string | ((prev: string) => string)) => {
+  const setMarkdown = (x: string | ((prev: string) => Promise<string>)) => {
+    if (!activeFile) return;
     if (typeof x === 'string') {
       saveFile({
         path: activeFile.path,
-        update: prev => ({
+        update: async prev => ({
           ...prev,
           markdown: x,
         }),
@@ -38,19 +40,19 @@ export const MainEditorInterface = ({ className }): JSX.Element => {
     } else {
       saveFile({
         path: activeFile.path,
-        update: prev => ({
+        update: async prev => ({
           ...prev,
-          markdown: x(prev.markdown),
+          markdown: await x(prev.markdown),
         }),
       });
     }
   };
-  const problems: string | null = activeFile?.problems;
-  const setProblems = (x: string | ((prev: string) => string)) => {
+  const setProblems = (x: string | ((prev: string) => Promise<string>)) => {
+    if (!activeFile) return;
     if (typeof x === 'string') {
       saveFile({
         path: activeFile.path,
-        update: prev => ({
+        update: async prev => ({
           ...prev,
           problems: x,
         }),
@@ -58,9 +60,9 @@ export const MainEditorInterface = ({ className }): JSX.Element => {
     } else {
       saveFile({
         path: activeFile.path,
-        update: prev => ({
+        update: async prev => ({
           ...prev,
-          problems: x(prev.problems),
+          problems: await x(prev.problems!),
         }),
       });
     }
@@ -68,34 +70,9 @@ export const MainEditorInterface = ({ className }): JSX.Element => {
 
   const handleFormatCode = () => {
     if (tab === 'content') {
-      setMarkdown(old =>
-        prettier.format(old, {
-          endOfLine: 'lf',
-          semi: true,
-          singleQuote: true,
-          tabWidth: 2,
-          trailingComma: 'es5',
-          arrowParens: 'avoid',
-          useTabs: true,
-          proseWrap: 'always',
-          parser: 'mdx',
-          plugins: [markdownParser],
-        })
-      );
+      setMarkdown(old => formatMarkdown(old));
     } else {
-      setProblems(old =>
-        prettier.format(old, {
-          endOfLine: 'lf',
-          semi: true,
-          singleQuote: true,
-          tabWidth: 2,
-          useTabs: false,
-          trailingComma: 'es5',
-          arrowParens: 'avoid',
-          parser: 'json',
-          plugins: [babelParser],
-        })
-      );
+      setProblems(old => formatProblems(old));
     }
   };
   const tabs = isEditingSolution
@@ -111,31 +88,19 @@ export const MainEditorInterface = ({ className }): JSX.Element => {
     <div className={classNames('tw-forms-disable-all-descendants', className)}>
       <EditorTabBar
         tabs={tabs}
-        activeTab={tab === 'content' ? 'content' : 'problems'}
+        activeTab={tab}
         onTabSelect={tab =>
           setTab(tab.value === 'content' ? 'content' : 'problems')
         }
         onFormatCode={handleFormatCode}
       />
       <Editor
-        theme="vs-dark"
-        path={
-          activeFile === null
-            ? 'NONE'
-            : tab === 'content'
-            ? activeFile.path
-            : activeFile.path.replace(/\.mdx$/, '.problems.json')
-        }
+        theme={darkMode ? 'vs-dark' : 'light'}
+        path={useAtomValue(trueFilePathAtom)}
         language={tab === 'content' ? 'custom-mdx' : 'json'}
-        value={
-          activeFile === null
-            ? 'Open a file to begin'
-            : tab === 'content'
-            ? markdown
-            : problems
-        }
-        onChange={(v, e) =>
-          tab === 'content' ? setMarkdown(v) : setProblems(v)
+        value={useAtomValue(trueFileAtom)}
+        onChange={v =>
+          tab === 'content' ? setMarkdown(v ?? '') : setProblems(v ?? '')
         }
         options={{
           wordWrap: 'on',
@@ -161,6 +126,44 @@ export const MainEditorInterface = ({ className }): JSX.Element => {
         onMount={e => {
           setMonacoEditorInstance(e);
           e.getModel().updateOptions({ insertSpaces: false });
+          e.addAction({
+            id: 'insert-code',
+            label: 'Insert Code',
+            contextMenuGroupId: 'navigation',
+            run: function (ed) {
+              ed.trigger('keyboard', 'paste', {
+                text: `
+<LanguageSection>
+
+<CPPSection>
+
+\`\`\`cpp
+// code here
+\`\`\`
+
+</CPPSection>
+
+<PySection>
+
+\`\`\`py
+# code here
+\`\`\`
+
+</PySection>
+
+<JavaSection>
+
+\`\`\`java
+// code here
+\`\`\`
+
+</JavaSection>
+
+</LanguageSection>
+  `,
+              });
+            },
+          });
 
           setTimeout(() => {
             e.layout();

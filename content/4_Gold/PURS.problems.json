@@ -1,21 +1,6 @@
 {
   "MODULE_ID": "PURS",
-  "sample": [
-    {
-      "uniqueId": "cses-1648",
-      "name": "Dynamic Range Sum Queries",
-      "url": "https://cses.fi/problemset/task/1648",
-      "source": "CSES",
-      "difficulty": "Easy",
-      "isStarred": false,
-      "tags": ["PURS"],
-      "solutionMetadata": {
-        "kind": "sketch",
-        "sketch": "Can also do range XOR queries w/ update."
-      }
-    }
-  ],
-  "segSam": [
+  "rangeMin": [
     {
       "uniqueId": "cses-1649",
       "name": "Dynamic Range Minimum Queries",
@@ -25,7 +10,23 @@
       "isStarred": false,
       "tags": ["PURQ"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "PURS"
+      }
+    }
+  ],
+  "rangeSum": [
+    {
+      "uniqueId": "cses-1648",
+      "name": "Dynamic Range Sum Queries",
+      "url": "https://cses.fi/problemset/task/1648",
+      "source": "CSES",
+      "difficulty": "Easy",
+      "isStarred": false,
+      "tags": ["PURS"],
+      "solutionMetadata": {
+        "kind": "in-module",
+        "moduleId": "PURS"
       }
     }
   ],
@@ -39,7 +40,8 @@
       "isStarred": false,
       "tags": ["PURS"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "PURS"
       }
     }
   ],
@@ -125,7 +127,8 @@
       "isStarred": true,
       "tags": ["PURS", "Offline"],
       "solutionMetadata": {
-        "kind": "internal"
+        "kind": "internal",
+        "hasHints": true
       }
     }
   ],
@@ -139,7 +142,8 @@
       "isStarred": true,
       "tags": ["PURS", "Inversions"],
       "solutionMetadata": {
-        "kind": "internal"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
@@ -188,8 +192,7 @@
       "isStarred": false,
       "tags": ["PURS", "Inversions"],
       "solutionMetadata": {
-        "kind": "USACO",
-        "usacoId": "720"
+        "kind": "internal"
       }
     },
     {

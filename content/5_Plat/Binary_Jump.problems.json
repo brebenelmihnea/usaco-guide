@@ -89,7 +89,7 @@
       "source": "POI",
       "difficulty": "Normal",
       "isStarred": false,
-      "tags": [],
+      "tags": ["Binary Jumping", "Sliding Window"],
       "solutionMetadata": {
         "kind": "internal"
       }
@@ -103,8 +103,8 @@
       "isStarred": false,
       "tags": [],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
@@ -219,8 +219,8 @@
       "isStarred": false,
       "tags": ["Diameter"],
       "solutionMetadata": {
-        "kind": "USACO",
-        "usacoId": "817"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
@@ -238,7 +238,7 @@
     },
     {
       "uniqueId": "usaco-901",
-      "name": "Exercise",
+      "name": "Exercise Route",
       "url": "http://www.usaco.org/index.php?page=viewproblem2&cpid=901",
       "source": "Platinum",
       "difficulty": "Very Hard",
@@ -321,8 +321,8 @@
       "isStarred": false,
       "tags": ["LCA"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CSA"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
@@ -347,14 +347,13 @@
       "isStarred": false,
       "tags": ["LCA"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "DMOJ"
+        "kind": "internal"
       }
     },
     {
       "uniqueId": "ks-dependent",
       "name": "Dependent Events",
-      "url": "https://codingcompetitions.withgoogle.com/kickstart/round/0000000000435914/00000000008d9970#problem",
+      "url": "https://zibada.guru/gcj/ks2021h/problems/#D",
       "source": "Google Kickstart",
       "difficulty": "Hard",
       "isStarred": false,

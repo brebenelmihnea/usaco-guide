@@ -14,9 +14,9 @@ export const IncompleteSection = ({
         target="_blank"
         rel="noreferrer"
       >
-        Github
+        GitHub
       </a>
-      .{children && <div className="h-2 mb-0" />}
+      .{children && <div className="mb-0 h-2" />}
       {children}
     </Danger>
   );

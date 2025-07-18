@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { useReducer } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useFirebaseUser } from '../../../context/UserDataContext/UserDataContext';
 import {
   LANGUAGE_LABELS,
   useUserLangSetting,
 } from '../../../context/UserDataContext/properties/simpleProperties';
+import { useFirebaseUser } from '../../../context/UserDataContext/UserDataContext';
 import { useActiveGroup } from '../../../hooks/groups/useActiveGroup';
 import {
   ProblemSubmissionRequestData,
@@ -37,16 +37,17 @@ export default function ProblemSubmissionInterface({
 }) {
   const firebaseUser = useFirebaseUser();
   const lang = useUserLangSetting();
-  const emptySubmission: Partial<ProblemSubmissionRequestData> = {
+  const emptySubmission: ProblemSubmissionRequestData = {
+    filename: '',
     problemID: problem.id,
     sourceCode: '',
     language: lang === 'showAll' ? 'cpp' : lang,
   };
   const [submission, editSubmission] = useReducer(
     (
-      oldSubmission: Partial<ProblemSubmissionRequestData>,
+      oldSubmission: ProblemSubmissionRequestData,
       updates: Partial<ProblemSubmissionRequestData>
-    ): Partial<ProblemSubmissionRequestData> => ({
+    ): ProblemSubmissionRequestData => ({
       ...oldSubmission,
       ...updates,
     }),
@@ -67,9 +68,10 @@ export default function ProblemSubmissionInterface({
       const fileReader = new FileReader();
       fileReader.readAsText(file, 'UTF-8');
       fileReader.onload = e => {
-        editSubmission({
-          sourceCode: e.target.result.toString(),
-        });
+        e.target?.result &&
+          editSubmission({
+            sourceCode: e.target.result.toString(),
+          });
       };
     },
   });
@@ -97,6 +99,11 @@ export default function ProblemSubmissionInterface({
   if (cannotSubmit) {
     const handleSubmitLink = async e => {
       e.preventDefault();
+      // prevent empty URL submission
+      if (!submissionLink.trim()) {
+        alert('Cannot submit empty URL');
+        return;
+      }
       await submitSubmissionLink(submissionLink, problem.postId, problem.id);
       setSubmissionLink('');
     };
@@ -111,7 +118,7 @@ export default function ProblemSubmissionInterface({
           website, then paste the submission url below. For Codeforces problems,
           you may need to make a Codeforces account first.
         </div>
-        <label htmlFor="submission-link" className="block mt-4">
+        <label htmlFor="submission-link" className="mt-4 block">
           Submission URL
         </label>
         <form onSubmit={handleSubmitLink}>
@@ -122,7 +129,7 @@ export default function ProblemSubmissionInterface({
             value={submissionLink}
             onChange={e => setSubmissionLink(e.target.value)}
           />
-          <button type="submit" className="mt-4 btn">
+          <button type="submit" className="btn mt-4">
             Submit
           </button>
         </form>
@@ -135,14 +142,14 @@ export default function ProblemSubmissionInterface({
     try {
       const submissionID = await submitSolution(
         {
-          problemID: problem.usacoGuideId,
-          language: submission.language,
+          problemID: problem.usacoGuideId!,
+          language: submission.language!,
           filename: {
             cpp: 'main.cpp',
             java: 'Main.java',
             py: 'main.py',
-          }[submission.language],
-          sourceCode: submission.sourceCode,
+          }[submission.language!],
+          sourceCode: submission.sourceCode!,
         },
         problem.postId,
         problem.id
@@ -160,7 +167,7 @@ export default function ProblemSubmissionInterface({
           Submit Code
         </h2>
       </div>
-      <div className="text-sm mt-1 text-gray-900 dark:text-gray-300">
+      <div className="mt-1 text-sm text-gray-900 dark:text-gray-300">
         <>
           All problems submitted through this website use standard input/output.
           When using Java, make sure to name your class Main. You can use{' '}
@@ -213,16 +220,16 @@ export default function ProblemSubmissionInterface({
           value={submission.sourceCode}
           onChange={e => editSubmission({ sourceCode: e.target.value })}
           className={`input font-mono${
-            isDragActive ? ' border-blue-600 ring-blue-600 ring-1' : ''
+            isDragActive ? 'border-blue-600 ring-1 ring-blue-600' : ''
           }`}
           placeholder="Paste code, or drag and drop a file over this textbox."
           required
         />
       </div>
-      <div className="mt-1 text-sm space-x-2 text-gray-500 dark:text-gray-400">
+      <div className="mt-1 space-x-2 text-sm text-gray-500 dark:text-gray-400">
         If you'd prefer, you can also{' '}
         <button
-          className="hover:text-gray-900 underline"
+          className="underline hover:text-gray-900"
           type="button"
           onClick={() => open()}
         >
@@ -230,7 +237,7 @@ export default function ProblemSubmissionInterface({
         </button>{' '}
         to select a file.
       </div>
-      <button type="submit" className="mt-4 btn">
+      <button type="submit" className="btn mt-4">
         Submit Code
       </button>
     </form>

@@ -21,8 +21,11 @@ There are $n$ doors which can be chosen as the first door. In each DP, we add ea
 
 ## Implementation
 
+**Time Complexity:** $\mathcal{O}(N^3 K)$
+
 <LanguageSection>
 <CPPSection>
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -39,8 +42,7 @@ int main() {
 	long long min_dist = INT64_MAX;
 	// Iterate through all possible positions of the first door
 	for (int start_pos = 0; start_pos < n; start_pos++) {
-		vector<vector<long long>> dp(k + 1,
-		                             vector<long long>(n + 1, INT64_MAX));
+		vector<vector<long long>> dp(k + 1, vector<long long>(n + 1, INT64_MAX));
 		// With no door used, the distance is only zero if there is no room
 		// filled
 		dp[0][n] = 0;
@@ -80,5 +82,6 @@ int main() {
 	cout << min_dist << endl;
 }
 ```
+
 </CPPSection>
 </LanguageSection>

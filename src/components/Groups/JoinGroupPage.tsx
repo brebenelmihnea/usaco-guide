@@ -2,16 +2,16 @@ import { RouteComponentProps } from '@reach/router';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { navigate } from 'gatsby';
 import * as React from 'react';
-import { SignInContext } from '../../context/SignInContext';
+import { useSignIn } from '../../context/SignInContext';
 import {
   useFirebaseUser,
   useIsUserDataLoaded,
 } from '../../context/UserDataContext/UserDataContext';
 import { useUserGroups } from '../../hooks/groups/useUserGroups';
 import { useFirebaseApp } from '../../hooks/useFirebase';
-import TopNavigationBar from '../TopNavigationBar/TopNavigationBar';
 import Layout from '../layout';
 import SEO from '../seo';
+import TopNavigationBar from '../TopNavigationBar/TopNavigationBar';
 
 const getQuery = name => {
   const url = window.location.href;
@@ -26,9 +26,12 @@ const getQuery = name => {
 const JoinGroupPage = (props: RouteComponentProps) => {
   const firebaseUser = useFirebaseUser();
   const isLoaded = useIsUserDataLoaded();
-  const { signIn } = React.useContext(SignInContext);
-  const [groupName, setGroupName] = React.useState<string>(null);
-  const [error, setError] = React.useState(null);
+  const { signIn } = useSignIn();
+  const [groupName, setGroupName] = React.useState<string | null>(null);
+  const [error, setError] = React.useState<{
+    errorCode: string | undefined;
+    message: string | undefined;
+  } | null>(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [isJoining, setIsJoining] = React.useState(false);
   const firebaseApp = useFirebaseApp();
@@ -60,7 +63,7 @@ const JoinGroupPage = (props: RouteComponentProps) => {
             };
           }) => {
             if (data.success) {
-              setGroupName(data.name);
+              setGroupName(data.name ?? null);
             } else {
               setError({ errorCode: data.errorCode, message: data.message });
             }
@@ -81,13 +84,13 @@ const JoinGroupPage = (props: RouteComponentProps) => {
       <SEO title="Join Group" />
       <TopNavigationBar />
       <main>
-        <div className="max-w-7xl px-2 sm:px-4 lg:px-8 mx-auto py-16">
+        <div className="mx-auto max-w-7xl px-2 py-16 sm:px-4 lg:px-8">
           {showNotSignedInMessage && (
             <div>
-              <p className="font-medium text-2xl text-center">
+              <p className="text-center text-2xl font-medium">
                 Please{' '}
                 <button
-                  className="focus:outline-none underline text-blue-600"
+                  className="text-blue-600 underline focus:outline-hidden"
                   onClick={() => signIn()}
                 >
                   sign in
@@ -99,13 +102,13 @@ const JoinGroupPage = (props: RouteComponentProps) => {
 
           {showLoading && (
             <div>
-              <p className="font-medium text-2xl text-center">Loading...</p>
+              <p className="text-center text-2xl font-medium">Loading...</p>
             </div>
           )}
 
           {error && (
             <div className="mb-8">
-              <p className="font-medium text-2xl text-center">
+              <p className="text-center text-2xl font-medium">
                 Error: {error.message}
               </p>
             </div>

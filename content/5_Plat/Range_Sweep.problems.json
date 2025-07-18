@@ -10,7 +10,8 @@
       "isStarred": false,
       "tags": ["PURS"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "range-sweep"
       }
     }
   ],
@@ -51,8 +52,7 @@
       "isStarred": false,
       "tags": ["PURQ"],
       "solutionMetadata": {
-        "kind": "USACO",
-        "usacoId": "816"
+        "kind": "internal"
       }
     },
     {
@@ -86,9 +86,10 @@
       "source": "IZhO",
       "difficulty": "Hard",
       "isStarred": false,
-      "tags": [],
+      "tags": ["Stack", "PURQ", "Lazy SegTree"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "internal",
+        "hasHints": true
       }
     }
   ],

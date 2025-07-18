@@ -10,7 +10,8 @@
       "isStarred": false,
       "tags": ["BFS"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "unweighted-shortest-paths"
       }
     }
   ],
@@ -24,7 +25,8 @@
       "isStarred": false,
       "tags": ["BFS"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "unweighted-shortest-paths"
       }
     }
   ],
@@ -98,8 +100,7 @@
       "isStarred": false,
       "tags": ["BFS", "DFS"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CSA"
+        "kind": "internal"
       }
     },
     {
@@ -169,7 +170,8 @@
       "isStarred": false,
       "tags": ["BFS"],
       "solutionMetadata": {
-        "kind": "internal"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {

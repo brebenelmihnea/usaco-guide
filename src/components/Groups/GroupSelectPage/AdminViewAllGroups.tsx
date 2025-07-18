@@ -27,7 +27,7 @@ export default function AdminViewAllGroups(): JSX.Element {
           'groups'
         ) as CollectionReference<GroupData>
       ).then(result => {
-        setGroups(result.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        setGroups(result.docs.map(doc => ({ ...doc.data(), id: doc.id })));
       });
     },
     [firebaseUser?.uid]
@@ -37,7 +37,7 @@ export default function AdminViewAllGroups(): JSX.Element {
     <>
       {!groups ? (
         <div>
-          <p className="font-medium text-2xl">Loading...</p>
+          <p className="text-2xl font-medium">Loading...</p>
         </div>
       ) : (
         groups.map(group => <GroupCard key={group.id} group={group} />)

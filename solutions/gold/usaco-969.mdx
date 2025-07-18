@@ -7,16 +7,16 @@ author: Qi Wang, Ryan Chou, George Pong
 
 [Official Analysis (C++)](http://www.usaco.org/current/data/sol_pump_gold_dec19.html)
 
+## Explanation
+
 The larger the denominator, the smaller the result will be. We also want to minimize the cost of the path. This hints at a shortest-path problem. Due to the low number of junction points, we can fix the minimum flow rate and search for the lowest cost path we could take.
 
 ## Implementation
 
-**Time Complexity:** $\mathcal{O}(M^2 \log N + MN)$
-
 <LanguageSection>
-
 <CPPSection>
 
+**Time Complexity:** $\mathcal{O}(M^2 \log N + MN)$
 
 ```cpp
 #include <bits/stdc++.h>
@@ -93,9 +93,11 @@ int main() {
 	cout << ans << '\n';
 }
 ```
-</CPPSection>
 
+</CPPSection>
 <PySection>
+
+**Time Complexity:** $\mathcal{O}(M^2 \log N + MN)$
 
 ```py
 import heapq
@@ -149,7 +151,6 @@ print(int(max_worth * 10**6), file=open("pump.out", "w"))
 ```
 
 </PySection>
-
 <JavaSection>
 
 **Time Complexity:** $\mathcal{O}(M \log N + N)$
@@ -232,8 +233,7 @@ public class pump {
 				}
 			}
 		}
-		return new int[] {costs[N - 1] == Integer.MAX_VALUE ? -1 : costs[N - 1],
-		                  min};
+		return new int[] {costs[N - 1] == Integer.MAX_VALUE ? -1 : costs[N - 1], min};
 	}
 
 	private static class Node implements Comparable {
@@ -263,8 +263,7 @@ public class pump {
 
 		public InputReader() {
 			try {
-				reader =
-				    new BufferedReader(new InputStreamReader(System.in), 32768);
+				reader = new BufferedReader(new InputStreamReader(System.in), 32768);
 			} catch (Exception e) {
 				throw new NullPointerException("Could not create input stream");
 			}
@@ -272,8 +271,7 @@ public class pump {
 
 		public InputReader(String fileName) {
 			try {
-				reader = new BufferedReader(new FileReader(new File(fileName)),
-				                            32768);
+				reader = new BufferedReader(new FileReader(new File(fileName)), 32768);
 			} catch (Exception ex) {
 				throw new NullPointerException(
 				    "Input file does not exist! Put it in the project folder.");
@@ -290,9 +288,7 @@ public class pump {
 			return tokenizer.nextToken();
 		}
 
-		public boolean hasNextInt() throws IOException {
-			return reader.ready();
-		}
+		public boolean hasNextInt() throws IOException { return reader.ready(); }
 
 		public int nextInt() { return Integer.parseInt(next()); }
 
@@ -321,5 +317,6 @@ public class pump {
 	}
 }
 ```
+
 </JavaSection>
 </LanguageSection>

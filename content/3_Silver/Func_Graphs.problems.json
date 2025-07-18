@@ -10,8 +10,8 @@
       "isStarred": false,
       "tags": ["Functional Graph"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
+        "kind": "in-module",
+        "moduleId": "func-graphs"
       }
     }
   ],
@@ -25,8 +25,8 @@
       "isStarred": false,
       "tags": ["Functional Graph"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
+        "kind": "in-module",
+        "moduleId": "func-graphs"
       }
     }
   ],
@@ -65,6 +65,31 @@
       "tags": ["SCC"],
       "solutionMetadata": {
         "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "usaco-284",
+      "name": "Luxury River Cruise",
+      "url": "http://usaco.org/index.php?page=viewproblem2&cpid=284",
+      "source": "Old Silver",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": ["Functional Graph"],
+      "solutionMetadata": {
+        "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "IOI11_garden",
+      "name": "Tropical Garden",
+      "url": "https://oj.uz/problem/view/IOI11_garden",
+      "source": "IOI",
+      "difficulty": "Very Hard",
+      "isStarred": false,
+      "tags": ["Functional Graph"],
+      "solutionMetadata": {
+        "kind": "IOI",
+        "year": 2011
       }
     }
   ]

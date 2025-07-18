@@ -123,8 +123,7 @@
       "isStarred": false,
       "tags": ["Tree", "DP"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "AC"
+        "kind": "internal"
       }
     },
     {
@@ -143,7 +142,7 @@
       "uniqueId": "usaco-1020",
       "name": "Delegation",
       "url": "http://www.usaco.org/index.php?page=viewproblem2&cpid=1020",
-      "source": "Plat",
+      "source": "Platinum",
       "difficulty": "Normal",
       "isStarred": false,
       "tags": ["DP", "Tree", "Binary Search"],
@@ -161,6 +160,19 @@
       "tags": ["Functional Graph"],
       "solutionMetadata": {
         "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "kattis-gcdharmony",
+      "name": "GCD Harmony",
+      "url": "https://open.kattis.com/problems/gcdharmony",
+      "source": "Kattis",
+      "difficulty": "Hard",
+      "isStarred": false,
+      "tags": ["DP", "Tree", "Number Theory"],
+      "solutionMetadata": {
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {

@@ -8,7 +8,7 @@ author: Chongtian Ma
 [Official Editorial (C++)](https://codeforces.com/blog/entry/5921)
 ## Implementation
 
-Note this is a bit different from the implentation outlined in the official
+Note this is a bit different from the implementation outlined in the official
 editorial. This loops over the start and end of the substrings rather than the
 length first.
 
@@ -50,8 +50,7 @@ int main() {
 			pal[i][j] = (pal[i + 1][j - 1] || j - i == 1) && (s[i] == s[j]);
 
 			// number of palindromes using inclusion - exclusion
-			dp[i][j] =
-			    dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1] + pal[i][j];
+			dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1] + pal[i][j];
 		}
 	}
 

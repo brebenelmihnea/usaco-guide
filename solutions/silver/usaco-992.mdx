@@ -2,16 +2,29 @@
 id: usaco-992
 source: USACO Silver 2020 January
 title: Wormhole Sort
-author: Óscar Garries, Neo Wang, Kevin Sheng
+author: Óscar Garries, Neo Wang, Kevin Sheng, Ruben Jing
 ---
 
 [Official Analysis (Java)](http://www.usaco.org/current/data/sol_wormsort_silver_jan20.html)
 
 ## Solution 1 - Binary Search and Floodfill
 
-**Time Complexity:** $\mathcal O((N+M)\log \max w_i)$
+If a certain wormhole width works, any larger wormhole width will work as well.
+Similarly, if a width fails, any smaller width will also fail.
+These two facts make it so that we can binary search on the minimal wormhole width.
+
+To check if a given minimal wormhole width $x$ is valid, we use DFS to find all positions
+that can reach each other by traversing wormholes at most width $x$.
+If the cow's initial and sorted positions are both part of the same component, we've found a valid wormhole width!
+
+For example, say we're testing a width of $10$ in the sample case.
+This makes our components $[0]$, $[1, 2]$, and $[3]$.
+Cow 1's initial position (3) and its final position (0)
+aren't in the same component, so this width wouldn't work.
 
 ### Implementation
+
+**Time Complexity:** $\mathcal O((N+M)\log \max w_i)$
 
 <LanguageSection>
 <CPPSection>
@@ -65,9 +78,7 @@ int main() {
 				frontier.pop_back();
 				component[curr] = curr_comp;
 				for (const auto &[n, w] : neighbors[curr]) {
-					if (component[n] == -1 && w >= mid) {
-						frontier.push_back(n);
-					}
+					if (component[n] == -1 && w >= mid) { frontier.push_back(n); }
 				}
 			}
 			curr_comp++;
@@ -89,8 +100,7 @@ int main() {
 		}
 	}
 
-	std::ofstream("wormsort.out")
-	    << (valid == max_width + 1 ? -1 : valid) << endl;
+	std::ofstream("wormsort.out") << (valid == max_width + 1 ? -1 : valid) << endl;
 }
 ```
 
@@ -140,8 +150,7 @@ public class WormSort {
 			int currComp = 0;
 			for (int c = 0; c < cowNum; c++) {
 				if (component[c] != -1) { continue; }
-				List<Integer> frontier =
-				    new ArrayList<>(Collections.singletonList(c));
+				List<Integer> frontier = new ArrayList<>(Collections.singletonList(c));
 				while (!frontier.isEmpty()) {
 					int curr = frontier.remove(frontier.size() - 1);
 					component[curr] = currComp;
@@ -184,9 +193,8 @@ public class WormSort {
 ## Solution 2 - Binary Search and DSU
 
 Like the floodfill solution, we binary search on the answer $x$, which is valid if all
-$p_i$ are in the same component as $i$, which we can query in
-$\mathcal{O}(\alpha(N))$ using a
-[Disjoint Set Union](https://en.wikipedia.org/wiki/Disjoint-set_data_structure).
+$p_i$ are in the same component as $i$, which we can query in $\mathcal{O}(\alpha(N))$ using a
+[Disjoint Set Union](/gold/dsu).
 
 ### Implementation
 
@@ -215,9 +223,7 @@ class DSU {
 		for (int i = 0; i < size; i++) { parent[i] = i; }
 	}
 
-	int get_top(int n) {
-		return parent[n] == n ? n : (parent[n] = get_top(parent[n]));
-	}
+	int get_top(int n) { return parent[n] == n ? n : (parent[n] = get_top(parent[n])); }
 
 	bool link(int n1, int n2) {
 		n1 = get_top(n1);
@@ -284,8 +290,7 @@ int main() {
 		}
 	}
 
-	std::ofstream("wormsort.out")
-	    << (valid == max_width + 1 ? -1 : valid) << endl;
+	std::ofstream("wormsort.out") << (valid == max_width + 1 ? -1 : valid) << endl;
 }
 ```
 
@@ -309,8 +314,7 @@ public class WormSort {
 		int maxWidth = 0;
 		List<int[]> wormholes = new ArrayList<>();
 		for (int w = 0; w < wormholeNum; w++) {
-			wormholes.add(
-			    new int[] {io.nextInt() - 1, io.nextInt() - 1, io.nextInt()});
+			wormholes.add(new int[] {io.nextInt() - 1, io.nextInt() - 1, io.nextInt()});
 			maxWidth = Math.max(maxWidth, wormholes.get(w)[2]);
 		}
 
@@ -415,9 +419,7 @@ class DSU {
 		for (int i = 0; i < size; i++) { parent[i] = i; }
 	}
 
-	int get_top(int n) {
-		return parent[n] == n ? n : (parent[n] = get_top(parent[n]));
-	}
+	int get_top(int n) { return parent[n] == n ? n : (parent[n] = get_top(parent[n])); }
 
 	bool link(int n1, int n2) {
 		n1 = get_top(n1);
@@ -436,9 +438,7 @@ struct Wormhole {
 	int width;
 };
 
-bool operator<(const Wormhole &w1, const Wormhole &w2) {
-	return w1.width < w2.width;
-}
+bool operator<(const Wormhole &w1, const Wormhole &w2) { return w1.width < w2.width; }
 
 int main() {
 	std::ifstream read("wormsort.in");
@@ -473,8 +473,7 @@ int main() {
 	}
 
 	std::ofstream("wormsort.out")
-	    << (wormhole_at == wormhole_num ? -1 : wormholes[wormhole_at].width)
-	    << endl;
+	    << (wormhole_at == wormhole_num ? -1 : wormholes[wormhole_at].width) << endl;
 }
 ```
 
@@ -498,8 +497,7 @@ public class WormSort {
 		int maxWidth = 0;
 		List<int[]> wormholes = new ArrayList<>();
 		for (int w = 0; w < wormholeNum; w++) {
-			wormholes.add(
-			    new int[] {io.nextInt() - 1, io.nextInt() - 1, io.nextInt()});
+			wormholes.add(new int[] {io.nextInt() - 1, io.nextInt() - 1, io.nextInt()});
 			maxWidth = Math.max(maxWidth, wormholes.get(w)[2]);
 		}
 
@@ -510,13 +508,11 @@ public class WormSort {
 		for (int i = 0; i < cowNum; i++) {
 			while (dsu.getTop(i) != dsu.getTop(cows[i])) {
 				wormholeAt--;
-				dsu.link(wormholes.get(wormholeAt)[0],
-				         wormholes.get(wormholeAt)[1]);
+				dsu.link(wormholes.get(wormholeAt)[0], wormholes.get(wormholeAt)[1]);
 			}
 		}
 
-		io.println(wormholeAt == wormholeNum ? -1
-		                                     : wormholes.get(wormholeAt)[2]);
+		io.println(wormholeAt == wormholeNum ? -1 : wormholes.get(wormholeAt)[2]);
 		io.close();
 	}
 

@@ -1,94 +1,67 @@
-import * as React from 'react';
-import styled, { css } from 'styled-components';
-import tw from 'twin.macro';
+import React from 'react';
 import { olympiads, ProblemInfo, probSources } from '../../../models/problem';
 import { UsacoTableProgress } from '../../Dashboard/DashboardProgress';
 import DifficultyBox from '../../DifficultyBox';
 import TextTooltip from '../../Tooltip/TextTooltip';
 import Tooltip from '../../Tooltip/Tooltip';
+import ListTableRow, { ListTableCell } from '../ListTable/ListTableRow';
+import { DivisionProblemInfo } from './DivisionList/DivisionProblemInfo';
 import ProblemsListItemDropdown from './ProblemsListItemDropdown';
 import ProblemStatusCheckbox from './ProblemStatusCheckbox';
 
 export type ProblemsListItemProps = {
-  problem: any; // ProblemInfo | DivisionProblemInfo; @jeffrey todo. DivisionProblemInfo if is division table, otherwise ProblemInfo
   showTags: boolean;
   showDifficulty: boolean;
   onShowSolutionSketch: (problem: ProblemInfo) => void;
-  isDivisionTable?: boolean; // only if is division table
-  modules?: boolean; // only if is division table
+  // modules?: boolean; // only if is division table
   showPercent?: boolean; // only if is division table
-};
-
-export const Anchor = styled.a`
-  ${tw`text-blue-600 font-semibold`}
-
-  .dark && {
-    color: #a9c5ea;
-  }
-`;
-
-// https://stackoverflow.com/questions/45871439/before-and-after-pseudo-classes-used-with-styled-components
-const StyledProblemRow = styled.tr`
-  ${({ isActive }) =>
-    isActive
-      ? css`
-          background-color: #fdfdea !important;
-          .dark && {
-            background-color: #3c3c00 !important;
-          }
-        `
-      : null}
-`;
+  // isDivisionTable?: boolean;
+} & (
+  | {
+      isDivisionTable: false;
+      problem: ProblemInfo;
+    }
+  | {
+      isDivisionTable: true;
+      problem: DivisionProblemInfo;
+      modules: boolean;
+    }
+);
 
 export default function ProblemsListItem(
   props: ProblemsListItemProps
 ): JSX.Element {
-  const [isActive, setIsActive] = React.useState(false);
-  const { problem } = props;
+  const { isDivisionTable, problem } = props;
   const id = `problem-${problem.uniqueId}`;
 
-  const divisionTable = !!props.isDivisionTable;
-
-  React.useEffect(() => {
-    const hashHandler = (): void => {
-      setIsActive(
-        window && window.location && window.location.hash === '#' + id
-      );
-    };
-    hashHandler();
-
-    window.addEventListener('hashchange', hashHandler, false);
-    return (): void =>
-      window.removeEventListener('hashchange', hashHandler, false);
-  }, []);
-
   const statusCol = (
-    <td className="pl-4 whitespace-nowrap text-sm font-medium">
+    <ListTableCell className="font-medium whitespace-nowrap">
       <div
         style={{ height: '1.25rem' }}
         className="flex items-center justify-center"
       >
         <ProblemStatusCheckbox problem={problem} />
       </div>
-    </td>
+    </ListTableCell>
   );
-
-  const sourceTooltip = divisionTable
-    ? null
-    : problem?.sourceDescription ||
-      (probSources[problem.source]?.[1] ?? olympiads[problem.source]?.[1]);
+  const sourceTooltip =
+    isDivisionTable == false
+      ? problem?.sourceDescription ||
+        (probSources[problem.source as keyof typeof probSources]?.[1] ??
+          olympiads[problem.source as keyof typeof olympiads]?.[1])
+      : null;
 
   let resultsUrl = ''; // used only for division tables
-  if (divisionTable) {
+  if (isDivisionTable) {
     const parts = problem.source.split(' ');
     parts[0] = parts[0].substring(2);
     if (parts[1] === 'US') parts[1] = 'open';
     else parts[1] = parts[1].toLowerCase().substring(0, 3);
     resultsUrl = `http://www.usaco.org/index.php?page=${parts[1]}${parts[0]}results`;
   }
-  const sourceCol = divisionTable ? (
-    <td className="pl-4 md:pl-6 py-4 whitespace-nowrap text-sm leading-5 font-medium">
-      <Anchor
+  const sourceCol = isDivisionTable ? (
+    <ListTableCell className="font-medium whitespace-nowrap">
+      <a
         href={resultsUrl}
         className={'truncate'}
         style={{ maxWidth: '15rem' }}
@@ -96,22 +69,22 @@ export default function ProblemsListItem(
         rel="nofollow noopener noreferrer"
       >
         {problem.source}
-      </Anchor>
-    </td>
+      </a>
+    </ListTableCell>
   ) : (
-    <td className="pl-4 md:pl-6 py-4 whitespace-nowrap text-sm leading-5 font-medium">
+    <ListTableCell className="font-medium whitespace-nowrap">
       {sourceTooltip ? (
         <TextTooltip content={sourceTooltip}>{problem.source}</TextTooltip>
       ) : (
         problem.source
       )}
-    </td>
+    </ListTableCell>
   );
 
   const nameCol = (
-    <td className="pl-4 md:px-6 py-4 whitespace-nowrap text-sm leading-5 font-medium">
+    <ListTableCell className="font-medium whitespace-nowrap">
       <div className="flex items-center">
-        {problem.isStarred && (
+        {isDivisionTable == false && problem.isStarred && (
           <Tooltip content="We highly recommend you do all starred problems!">
             <svg
               className="h-4 w-4 text-blue-400"
@@ -122,69 +95,70 @@ export default function ProblemsListItem(
             </svg>
           </Tooltip>
         )}
-        <Anchor
+        <a
           href={problem.url}
           className={
-            (problem.isStarred ? 'pl-1 sm:pl-2' : 'sm:pl-6') + ' truncate'
+            (isDivisionTable == false && problem.isStarred
+              ? 'pl-1 sm:pl-2'
+              : 'sm:pl-6') + ' problem-list-item-anchor truncate'
           }
           style={{ maxWidth: '20rem' }}
           target="_blank"
           rel="nofollow noopener noreferrer"
         >
           {problem.name}
-        </Anchor>
+        </a>
       </div>
-    </td>
+    </ListTableCell>
   );
 
   const difficultyCol = (
-    <td className={`py-4 whitespace-nowrap leading-5 pr-4 md:pr-6`}>
+    <ListTableCell className="whitespace-nowrap">
       <DifficultyBox difficulty={problem.difficulty} />
-    </td>
+    </ListTableCell>
   );
 
   return (
-    <StyledProblemRow id={id} isActive={isActive}>
+    <ListTableRow id={id}>
       {statusCol}
       {sourceCol}
       {nameCol}
       {props.showDifficulty &&
-        (divisionTable
+        (isDivisionTable
           ? props.showPercent && (
-              <td className="pl-4 md:pl-6 pr-4 md:pr-6 py-3 text-left text-xs leading-4 font-medium uppercase tracking-wider">
+              <ListTableCell className="text-left text-xs leading-4 font-medium tracking-wider uppercase">
                 <UsacoTableProgress completed={problem.percentageSolved} />
-              </td>
+              </ListTableCell>
             )
           : difficultyCol)}
-      <td className="pl-4 md:pl-6 py-4 whitespace-nowrap text-sm leading-5 font-medium">
+      <ListTableCell className="font-medium whitespace-nowrap">
         {problem.tags && problem.tags.length ? (
           <details
             open={props.showTags}
-            className="text-gray-500 dark:text-dark-med-emphasis"
+            className="dark:text-dark-med-emphasis text-gray-500"
           >
             <summary>Show Tags</summary>
             <span className="text-xs">{problem.tags.sort().join(', ')}</span>
           </details>
         ) : null}
-      </td>
-      {props.modules && (
-        <td className="pl-4 md:pl-6 pr-4 md:pr-6 py-4 whitespace-nowrap text-sm font-medium leading-none">
+      </ListTableCell>
+      {isDivisionTable && props.modules && (
+        <ListTableCell className="font-medium whitespace-nowrap">
           {problem.moduleLink ? (
-            <Anchor href={problem.moduleLink} target="_blank" className="pl-6">
+            // eslint-disable-next-line react/jsx-no-target-blank
+            <a href={problem.moduleLink} target="_blank">
               Link
-            </Anchor>
+            </a>
           ) : (
             <Tooltip content={`This problem isn't in a module yet.`}>
-              <span className="text-gray-300 dark:text-gray-600 pl-6">
-                None
-              </span>
+              <span className="text-gray-300 dark:text-gray-600">None</span>
             </Tooltip>
           )}
-        </td>
+        </ListTableCell>
       )}
-      <td className="text-center pr-2 md:pr-3">
+      <td className="pr-2 text-center md:pr-3">
         <ProblemsListItemDropdown {...props} isFocusProblem={false} />
       </td>
-    </StyledProblemRow>
+    </ListTableRow>
   );
 }

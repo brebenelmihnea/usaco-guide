@@ -17,9 +17,9 @@ const VideoComponent = ({ link }: { link: string }) => {
   };
   let id = '';
   if (link.indexOf('youtube.com') !== -1) {
-    id = getParameterByName('v', link.trim());
+    id = getParameterByName('v', link.trim())!;
   } else if (link.indexOf('youtu.be') !== -1) {
-    id = link.split('/').pop();
+    id = link.split('/').pop()!;
   }
 
   if (!id) {
@@ -35,7 +35,7 @@ const VideoComponent = ({ link }: { link: string }) => {
       >
         <div
           className={
-            'absolute top-0 left-0 w-full h-full border-2 border-solid bg-gray-200'
+            'absolute top-0 left-0 h-full w-full border-2 border-solid bg-gray-200'
           }
         >
           <p className={'text-center'}>
@@ -66,15 +66,14 @@ const GroupsCodeBlock = ({
   children: React.ReactNode;
   inline?: boolean;
 }) => {
-  const value = children[0];
+  const value = children![0];
+  const isDarkMode = useDarkMode();
   if (className === 'language-video') {
     return <VideoComponent link={value} />;
   }
   if (inline) {
     return <code>{value}</code>;
   }
-
-  const isDarkMode = useDarkMode();
 
   return (
     <CodeBlock className={className} isDarkMode={isDarkMode}>

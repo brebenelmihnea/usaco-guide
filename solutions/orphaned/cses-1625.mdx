@@ -240,7 +240,7 @@ public class GridPaths {
 			if (pathIdx == p.length) return 1;  // visited every cell -> valid!
 			return 0;  // didn't visit every cell (path length is too short)
 		}
-		// visited all cells, but didn't end up in the correct locaiton
+		// visited all cells, but didn't end up in the correct location
 		if (pathIdx == p.length) return 0;
 
 		int ret = 0;  // cumulative count for this "starting position"
@@ -250,9 +250,7 @@ public class GridPaths {
 		if (p[pathIdx] < 4) {
 			int nxtR = curR + dr[p[pathIdx]];
 			int nxtC = curC + dc[p[pathIdx]];
-			if (!onPath[nxtR][nxtC]) {
-				ret += tryPath(pathIdx + 1, nxtR, nxtC);
-			}
+			if (!onPath[nxtR][nxtC]) { ret += tryPath(pathIdx + 1, nxtR, nxtC); }
 		}
 		// now search for dead ends (Optimization 4)
 		else if ((curC > 2) && onPath[curR][curC - 2] &&
@@ -269,8 +267,8 @@ public class GridPaths {
 			int nxtR = curR;
 			int nxtC = curC + 1;
 			ret += tryPath(pathIdx + 1, nxtR, nxtC);
-		} else if ((curR > 2) && onPath[curR - 2][curC] &&
-		           onPath[curR - 1][curC - 1] && (!onPath[curR - 1][curC])) {
+		} else if ((curR > 2) && onPath[curR - 2][curC] && onPath[curR - 1][curC - 1] &&
+		           (!onPath[curR - 1][curC])) {
 			// potential dead end upwards
 			// note: I didn't include all possible scenarios because
 			// it wasn't necessary in order for the program to run in time

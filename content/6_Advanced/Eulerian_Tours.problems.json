@@ -1,6 +1,21 @@
 {
   "MODULE_ID": "eulerian-tours",
-  "sam": [
+  "de-bruijn-sequence": [
+    {
+      "uniqueId": "cses-1692",
+      "name": "De Bruijn Sequence",
+      "url": "https://cses.fi/problemset/task/1692",
+      "source": "CSES",
+      "difficulty": "Easy",
+      "isStarred": true,
+      "tags": ["Hamiltonian path"],
+      "solutionMetadata": {
+        "kind": "in-module",
+        "moduleId": "eulerian-tours"
+      }
+    }
+  ],
+  "sam1": [
     {
       "uniqueId": "cses-1691",
       "name": "Mail Delivery (Undirected)",
@@ -10,9 +25,12 @@
       "isStarred": false,
       "tags": ["Euler Tour"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "eulerian-tours"
       }
-    },
+    }
+  ],
+  "sam2": [
     {
       "uniqueId": "cses-1693",
       "name": "Teleporters (Directed)",
@@ -22,7 +40,8 @@
       "isStarred": false,
       "tags": ["Euler Tour"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "in-module",
+        "moduleId": "eulerian-tours"
       }
     }
   ],
@@ -64,6 +83,19 @@
       "solutionMetadata": {
         "kind": "autogen-label-from-site",
         "site": "CSA"
+      }
+    },
+    {
+      "uniqueId": "cf-949D",
+      "name": "Turtle and Multiplication",
+      "url": "https://codeforces.com/contest/1981/problem/D",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": [],
+      "solutionMetadata": {
+        "kind": "autogen-label-from-site",
+        "site": "CF"
       }
     },
     {

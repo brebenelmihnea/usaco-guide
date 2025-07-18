@@ -46,13 +46,50 @@
       "isStarred": false,
       "tags": ["Binary Search", "Greedy", "2P"],
       "solutionMetadata": {
-        "kind": "internal"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
       "uniqueId": "cf-1077D",
       "name": "Cutting Out",
       "url": "https://codeforces.com/contest/1077/problem/D",
+      "source": "CF",
+      "difficulty": "Easy",
+      "isStarred": false,
+      "tags": ["Binary Search"],
+      "solutionMetadata": {
+        "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "cf-2060E",
+      "name": "Graph Composition",
+      "url": "https://codeforces.com/contest/2060/problem/E",
+      "source": "CF",
+      "difficulty": "Easy",
+      "isStarred": false,
+      "tags": ["Connected Components", "DSU"],
+      "solutionMetadata": {
+        "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "cf-404C",
+      "name": "Restore Graph",
+      "url": "https://codeforces.com/contest/404/problem/C",
+      "source": "CF",
+      "difficulty": "Easy",
+      "isStarred": false,
+      "tags": ["BFS"],
+      "solutionMetadata": {
+        "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "cf-1873E",
+      "name": " Building an Aquarium",
+      "url": "https://codeforces.com/contest/1873/problem/E",
       "source": "CF",
       "difficulty": "Easy",
       "isStarred": false,
@@ -106,7 +143,7 @@
       "source": "Silver",
       "difficulty": "Normal",
       "isStarred": false,
-      "tags": ["Games", "Number Theory"],
+      "tags": ["Game Theory", "NT"],
       "solutionMetadata": {
         "kind": "USACO",
         "usacoId": "1255"
@@ -159,8 +196,8 @@
       "isStarred": false,
       "tags": ["Binary Search, 2P"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
@@ -172,8 +209,7 @@
       "isStarred": false,
       "tags": ["Binary Search"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
+        "kind": "internal"
       }
     },
     {
@@ -183,10 +219,9 @@
       "source": "CF",
       "difficulty": "Normal",
       "isStarred": false,
-      "tags": ["Ad Hoc", "Greedy"],
+      "tags": ["Ad Hoc", "Greedy", "DFS"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
+        "kind": "internal"
       }
     },
     {
@@ -197,6 +232,94 @@
       "difficulty": "Normal",
       "isStarred": false,
       "tags": ["Sorting"],
+      "solutionMetadata": {
+        "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "cf-1775D",
+      "name": "Friendly Spiders",
+      "url": "https://codeforces.com/contest/1775/problem/D",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": ["Number Theory", "Graphs", "BFS", "Shortest Path"],
+      "solutionMetadata": {
+        "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "cf-1722E",
+      "name": "Counting Rectangles",
+      "url": "https://codeforces.com/problemset/problem/1722/E",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": ["Prefix Sums"],
+      "solutionMetadata": {
+        "kind": "internal"
+      }
+    },
+    {
+      "uniqueId": "cf-1690G",
+      "name": "Count the Trains",
+      "url": "https://codeforces.com/problemset/problem/1690/G",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": ["Sorted Set"],
+      "solutionMetadata": {
+        "kind": "autogen-label-from-site",
+        "site": "CF"
+      }
+    },
+    {
+      "uniqueId": "cf-1108E2",
+      "name": "Array and Segments",
+      "url": "https://codeforces.com/contest/1108/problem/E2",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": ["Sorted Set"],
+      "solutionMetadata": {
+        "kind": "autogen-label-from-site",
+        "site": "CF"
+      }
+    },
+    {
+      "uniqueId": "cf-1622C",
+      "name": "Set Or Decrease",
+      "url": "https://codeforces.com/contest/1622/problem/C",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": ["Binary Search", "Prefix Sums"],
+      "solutionMetadata": {
+        "kind": "autogen-label-from-site",
+        "site": "CF"
+      }
+    },
+    {
+      "uniqueId": "cf-2021C2",
+      "name": "Adjust The Presentation",
+      "url": "https://codeforces.com/problemset/problem/2021/C2",
+      "source": "CF",
+      "difficulty": "Normal",
+      "isStarred": false,
+      "tags": ["Greedy"],
+      "solutionMetadata": {
+        "kind": "autogen-label-from-site",
+        "site": "CF"
+      }
+    },
+    {
+      "uniqueId": "cf-700B",
+      "name": "Connecting Universities",
+      "url": "https://codeforces.com/contest/700/problem/B",
+      "source": "CF",
+      "difficulty": "Hard",
+      "isStarred": false,
+      "tags": ["DFS"],
       "solutionMetadata": {
         "kind": "autogen-label-from-site",
         "site": "CF"
@@ -211,8 +334,7 @@
       "isStarred": false,
       "tags": ["Binary Search", "Bitmasks"],
       "solutionMetadata": {
-        "kind": "autogen-label-from-site",
-        "site": "CF"
+        "kind": "internal"
       }
     },
     {
@@ -222,9 +344,9 @@
       "source": "AC",
       "difficulty": "Hard",
       "isStarred": false,
-      "tags": ["Trees", "Games"],
+      "tags": ["Trees", "Game Theory"],
       "solutionMetadata": {
-        "kind": "none"
+        "kind": "internal"
       }
     },
     {
@@ -248,19 +370,59 @@
       "isStarred": false,
       "tags": ["2P", "Greedy"],
       "solutionMetadata": {
-        "kind": "internal"
+        "kind": "internal",
+        "hasHints": true
       }
     },
     {
-      "uniqueId": "lc-MaximizeValueOfFunctionInABallPassingGame",
-      "name": "Maximize Value of Function in a Ball Passing Game",
-      "url": "https://leetcode.com/contest/weekly-contest-360/problems/maximize-value-of-function-in-a-ball-passing-game/",
-      "source": "LC",
+      "uniqueId": "cf-412D",
+      "name": "Giving Awards",
+      "url": "https://codeforces.com/contest/412/problem/D",
+      "source": "CF",
       "difficulty": "Hard",
       "isStarred": false,
-      "tags": ["Functional Graph"],
+      "tags": ["DFS"],
+      "solutionMetadata": {
+        "kind": "autogen-label-from-site",
+        "site": "CF"
+      }
+    },
+    {
+      "uniqueId": "cf-2064D",
+      "name": "Eating",
+      "url": "https://codeforces.com/problemset/problem/2064/D",
+      "source": "CF",
+      "difficulty": "Hard",
+      "isStarred": false,
+      "tags": ["2D Prefix Sums", "Bitmasking", "DP"],
+      "solutionMetadata": {
+        "kind": "autogen-label-from-site",
+        "site": "CF"
+      }
+    },
+    {
+      "uniqueId": "other-13-dreaming",
+      "name": "2013 - Dreaming",
+      "url": "https://oj.uz/problem/view/IOI13_dreaming",
+      "source": "other",
+      "difficulty": "Hard",
+      "isStarred": false,
+      "tags": ["Tree"],
       "solutionMetadata": {
         "kind": "none"
+      }
+    },
+    {
+      "uniqueId": "cf-1943C",
+      "name": "Tree Compass",
+      "url": "https://codeforces.com/contest/1943/problem/C",
+      "source": "CF",
+      "difficulty": "Very Hard",
+      "isStarred": false,
+      "tags": ["Tree"],
+      "solutionMetadata": {
+        "kind": "autogen-label-from-site",
+        "site": "CF"
       }
     },
     {
